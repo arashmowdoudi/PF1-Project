@@ -9,7 +9,7 @@
 
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Import the required libraries for the program to work.
+;Import the requirement libraries for startng the program.
 (require 2htdp/image)
 (require 2htdp/universe)
 
@@ -21,24 +21,32 @@
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;Scenery while playing the game.
-;1 Background color using HTML codes.
+; BG-Color is using HTML codes
+; it represent the color of background during the game
+; source of colors information : https://htmlcolorcodes.com/
 (define BG-Color (make-color 60 100 50))
-;colors information received from: https://htmlcolorcodes.com/
+
+
+
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-;Width and Height of the Background
-(define BG-Width 2000) ;;teammates, try running this program and try to find out what numbers suit best.
-(define BG-Height 1000) ;; <read comment above>
+; BG-Width is a not negative number
+; it represent width of background during the game.
+(define BG-Width 2000)
+                                                                             ;;;teammates, try running this program and try to find out what numbers suit best.
 
+; BG-Height is a not negative number
+; it represent height of background during the game.
+(define BG-Height 1000)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;What will the background consist of:
 ;(color, width, height)
+
 (define BG (empty-scene BG-Width BG-Height BG-Color))
 
 
