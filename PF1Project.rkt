@@ -34,19 +34,21 @@
 
 
 ; BG-Width is a not negative number
-; it represent width of background during the game.
+; it represent width of background in the game.
 (define BG-Width 2000)
                                                                              ;;;teammates, try running this program and try to find out what numbers suit best.
 
 ; BG-Height is a not negative number
-; it represent height of background during the game.
+; it represent height of background in the game.
 (define BG-Height 1000)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;What will the background consist of:
-;(color, width, height)
+; BG is a image (background)
+; it represents the background in the game
 
+; BG: Number Number   -> image(World state)
+; Given width and height and color of background and returns image of backgrounds
 (define BG (empty-scene BG-Width BG-Height BG-Color))
 
 
@@ -70,9 +72,12 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-;Points
-;Each character starts from a starting position and has to jump to the ending position with the help of key-events. There are many stages in the game, and as it is in all games, the difficulty increases with every level passed aka the distance between the starting and the ending position increases so you should adjust the key-event in that way so that you do not go out of bounds.
-;For each level passed, the user collects +1 points to the accumulator.
+; Points
+; Each character starts from a starting position and has to jump to the ending position
+; with the help of key-events. There are many stages in the game, and as it is in all games,
+; the difficulty increases with every level passed aka the distance between the starting and
+; the ending position increases so you should adjust the key-event in that way so that you 
+; do not go out of bounds. For each level passed, the user collects +1 points to the accumulator.
 
 
 (define 1-POINT 1)
@@ -129,7 +134,10 @@
 ;(define SUPERMARIO2 (bitmap ....)
 ;(define SUPERMARIO3 (bitmap ....)
 ;SuperMario original position
-(define ORIGINAL-POS (make-posn 100 200)) ;NUMBERS ARE SUBJECT TO CHANGE.
+
+; ORIGINAL-POS : Number Number -> Number
+; given two numbers and it returns a number which change subjects.
+(define ORIGINAL-POS (make-posn 100 200)) 
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -180,25 +188,27 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-;World state
-;A world is a (make-word posn char curr-box next-box fail?)
-;where
-;posn is a position
-;char is a character
-;current-box is a box, the current one we are in.
-;next-box is a box, the next box of the one we are in right now.
-;fail is a boolean, signifying whether we have not complied with the game rules.
-;Interpretation: Our jumping game, which consists of posn which is the distance of the jump from some point to the end,
-;curr-box is the box we are currently on
-;next-box is the box in which we intend to go.
-;fail? if the user succeeded in complying with the game rules.
+; World state
+; A world is a (make-word posn char curr-box next-box fail?) where:
+; posn is a Number
+; char is a character
+; current-box is a box, the current one we are in.
+; next-box is a box, the next box of the one we are in right now.
+; fail is a boolean, signifying whether we have not complied with the game rules.
+
+; Interpretation: Our jumping game, which consists of posn which is the distance of the jump from some point to the end,
+; curr-box is the box we are currently on
+; next-box is the box in which we intend to go.
+; fail? if the user succeeded in complying with the game rules.
 
 
 
 ; TEAMMATES: Please complete header, template and tests of this definition.
 
-;Header ....
-;Template....
+; Header ....
+; Template....
+
+
 
 (define-struct world [char dot curr-box next-box fail?])
 
