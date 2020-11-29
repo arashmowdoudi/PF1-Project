@@ -111,8 +111,11 @@
 
 ;(c): https://docs.racket-lang.org/teachpack/2htdpimage.html#%28def._%28%28lib._2htdp%2Fimage..rkt%29._image-width%29%29
 
-;(define BOX-Width (image-width (bitmap ;path to the image we will use))
-;(define BOX-Height (image-height (bitmap ;path to the image we will use))
+;Writing it after having written the boxes function.
+;the box-width and height will be the same to the first box we will have in our game.  (starting-box). so we will use the starting box.
+(define BOX-Width (image-width  (bitmap "images/sm-images/starting-box.png")))
+(define BOX-Height (image-height (bitmap "images/sm-images/starting-box.png")))
+
 
 
 
@@ -130,14 +133,18 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;Game Character:
-;(define SUPERMARIO1 (bitmap ....)
-;(define SUPERMARIO2 (bitmap ....)
-;(define SUPERMARIO3 (bitmap ....)
-;SuperMario original position
+(define SUPERMARIO1 (bitmap "images/sm-images/relax.png"))
 
-; ORIGINAL-POS : Number Number -> Number
-; given two numbers and it returns a number which change subjects.
-(define ORIGINAL-POS (make-posn 100 200)) 
+
+;SuperMario getting ready to jump
+(define SUPERMARIO2 (bitmap "images/sm-images/readytojump.png"))
+
+
+;SuperMario on the jumping state.
+(define SUPERMARIO3 (bitmap "images/sm-images/sm2.png"))
+
+;SuperMario original position
+(define ORIGINAL-POS (make-posn 100 200)) ;NUMBERS ARE SUBJECT TO CHANGE.
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -147,11 +154,12 @@
 ;Documentation: https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._make-vector%29%29
 ;Following definiton works, we just need to upload the images through the respected foldier stored in our PC.
 
-;(define box (make-vector 3))  ;box = START & END 
+(define boxes (make-vector 3))  ;boxes = START & END1 & END2 (for the two levels) 
 ; https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._vector-set%21%29%29
-;(vector-set! box 0 (bitmap "....."))
-;(vector-set! box 1 (bitmap "....."))
-;(vector-set! box 2 (bitmap "....."))
+(vector-set! boxes 0 (bitmap "images/sm-images/starting-box.png"))
+(vector-set! boxes 1 (bitmap "images/sm-images/final-box.png"))
+(vector-set! boxes 2 (bitmap "images/sm-images/final-box.png"))
+
 
 
 
@@ -254,22 +262,50 @@
                             
                             
 ;; commented the following definition because we must create image of our character supermario in all its three states.
-;(define (w-keyevent w key)
- ; (cond
-  ;  [(and (key=? key " ") (not (= (character-state (world-char w)) 2)))
-   ;      (make-world
-    ;      (make-character (character-points (world-char w))
-     ;                                 (make-posn
-      ;                                (posn-x (character-position (world-char w)))
-       ;                               (posn-y (character-position (world-char w)))) 1 SUPERMARIO2)                             
-        ;              (make-posn
-         ;             (+ MOVE-X (posn-x (world-dot w)))
-          ;            (+ MOVE-Y (posn-y (world-dot w))))
-           ;          
-            ;         (world-curr-box w)
-             ;        (world-next-box w)
-              ;       (world-fail? w))]))
+(define (w-keyevent w key)
+  (cond
+    [(and (key=? key " ") (not (= (character-state (world-char w)) 2)))
+         (make-world
+          (make-character (character-points (world-char w))
+                                      (make-posn
+                                      (posn-x (character-position (world-char w)))
+                                      (posn-y (character-position (world-char w)))) 1 SUPERMARIO2)                             
+                      (make-posn
+                      (+ MOVE-X (posn-x (world-dot w)))
+                      (+ MOVE-Y (posn-y (world-dot w))))
+                     
+                     (world-curr-box w)
+                     (world-next-box w)
+                     (world-fail? w))]))
+
+;Or case, used when the program has just started executing or/and after having failed.
+     [(or (key=? key "\r") (= (character-state (world-char w)) -1) (not (false? (world-fail? w))))
+         (make-world
+          (make-character (character-points (world-char w))
+                                     (make-posn
+                                    (posn-x (character-position (world-char w)))
+                                     (posn-y (character-position (world-char w))))
+                                     0
+                                     SUPERMARIO0)
+                     ORIGINAL-POS
+                     (world-curr-box w)
+                     (world-next-box w)
+                     #false) 
+        [else w]]
 
 
+;Tests/Examples
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+;What happens after we have stopped clicking w? The character will start jumping
+
+
+;(define (after-w w key)
+;  (cond
+;    [(key=? key " ") (make-world (make-character (character-points (world-char w))
+;                                                 ;update the position of the character/ jumping state
+;                                                 (make-posn
+;                                                  (posn-x (character-position (world-char w)))
+;                                                  (posn-y (character-position (world-char w)))) 2
+;                                                                                                SUPERMARIO3))]))
+                
