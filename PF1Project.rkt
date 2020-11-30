@@ -20,27 +20,20 @@
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-; BG-Color is using HTML codes
-; it represent the color of background during the game
 ; source of colors information : https://htmlcolorcodes.com/
-(define BG-Color (make-color 60 100 50))
+(define BG-COLOR (make-color 60 100 50))
 
 
 
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-; BG-Width is a not negative number
-; it represent width of background in the game.
-(define BG-Width 2000)
+; width of background in the game.
+(define BG-WIDTH 2000)
                                                                              ;;;teammates, try running this program and try to find out what numbers suit best.
 
-; BG-Height is a not negative number
-; it represent height of background in the game.
-(define BG-Height 1000)
+; HEIGHT of background in the game.
+(define BG-HEIGHT 1000)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -49,7 +42,7 @@
 
 ; BG: Number Number   -> image(World state)
 ; Given width and height and color of background and returns image of backgrounds
-(define BG (empty-scene BG-Width BG-Height BG-Color))
+(define BG (empty-scene BG-WIDTH BG-HEIGHT BG-COLOR))
 
 
 
@@ -113,8 +106,8 @@
 
 ;Writing it after having written the boxes function.
 ;the box-width and height will be the same to the first box we will have in our game.  (starting-box). so we will use the starting box.
-(define BOX-Width (image-width  (bitmap "images/sm-images/starting-box.png")))
-(define BOX-Height (image-height (bitmap "images/sm-images/starting-box.png")))
+(define BOX-WIDTH (image-width  (bitmap "images/sm-images/starting-box.png")))
+(define BOX-HEIGHT (image-height (bitmap "images/sm-images/starting-box.png")))
 
 
 
@@ -195,26 +188,17 @@
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+; Interpretation: A world is a struct where
+; char is Image
+; dot
+; curr-box is Posn
+; next-box is Posn
+; fail? is  Boolean
 
-; World state
-; A world is a (make-word posn char curr-box next-box fail?) where:
-; posn is a Number
-; char is a character
-; current-box is a box, the current one we are in.
-; next-box is a box, the next box of the one we are in right now.
-; fail is a boolean, signifying whether we have not complied with the game rules.
-
-; Interpretation: Our jumping game, which consists of posn which is the distance of the jump from some point to the end,
+; Our jumping game, which consists of posn which is the distance of the jump from some point to the end,
 ; curr-box is the box we are currently on
 ; next-box is the box in which we intend to go.
-; fail? if the user succeeded in complying with the game rules.
-
-
-
-; TEAMMATES: Please complete header, template and tests of this definition.
-
-; Header ....
-; Template....
+; fail? if the user failed in complying with the game rules.
 
 
 
@@ -224,30 +208,21 @@
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;Character State
-;A character is a (make-character position state frame points)
-;Where:
-;position is a Posn of the character game.
-;State depends on the character state.
-;resting -> 0
-;powering-up -> 1
-;jumping -> 2
-;frame is the img we will set.
+; Character State
+; A character is a struct where:
+; position is Posn
+; State is Number [0,2]
+; frame is Image
+; points is Number
+
 ;points are the points accumulated by the user using the character.
 ;Interpretation: position is the Char's pos, state is the state of the character (what he is doing),
 ;frame is the image of our character complying with our key handlers,
 ;points are the points accumulated by the character.
 
-;Teammates:
-;Header + Template
 
 
 (define-struct character [position state frame points])
-
-
-;Tests/Examples
-
-
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;A gamebox is (make-box id pos)
@@ -276,7 +251,7 @@
                      
                      (world-curr-box w)
                      (world-next-box w)
-                     (world-fail? w))]))
+                     (world-fail? w))]
 
 ;Or case, used when the program has just started executing or/and after having failed.
      [(or (key=? key "\r") (= (character-state (world-char w)) -1) (not (false? (world-fail? w))))
@@ -291,7 +266,7 @@
                      (world-curr-box w)
                      (world-next-box w)
                      #false) 
-        [else w]]
+        [else w]]))
 
 
 ;Tests/Examples
