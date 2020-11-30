@@ -20,28 +20,25 @@
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-; source of colors information : https://htmlcolorcodes.com/
+
+; color of backgrouf with rgb
 (define BG-COLOR (make-color 60 100 50))
 
 
-
+; source of colors information : https://htmlcolorcodes.com/
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; width of background in the game.
 (define BG-WIDTH 2000)
-                                                                             ;;;teammates, try running this program and try to find out what numbers suit best.
+                                                                            
 
 ; HEIGHT of background in the game.
 (define BG-HEIGHT 1000)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-; BG is a image (background)
-; it represents the background in the game
-
-; BG: Number Number   -> image(World state)
-; Given width and height and color of background and returns image of backgrounds
+; it represent background of game.
 (define BG (empty-scene BG-WIDTH BG-HEIGHT BG-COLOR))
 
 
@@ -261,7 +258,7 @@
                                     (posn-x (character-position (world-char w)))
                                      (posn-y (character-position (world-char w))))
                                      0
-                                     SUPERMARIO0)
+                                     SUPERMARIO)
                      ORIGINAL-POS
                      (world-curr-box w)
                      (world-next-box w)
