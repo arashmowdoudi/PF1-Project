@@ -402,7 +402,7 @@
 
                 
          
-         
+      
                                         
    ;tests
 ;check random
@@ -425,6 +425,27 @@
 
 
 
+
+
+;List (World State) , Key Input -> List (World State)
+;checks for a key input and updates the bigbang world
+
+(define (key-handler ls a-key)
+  (cond [(= (sixth ls) 0)
+  (cond
+    [(key=? a-key "h") (hit ls)] ;hit
+    [(key=? a-key "s")
+     (stay-game ls)
+     ]
+    [else ls]
+    )
+  ]
+        [else
+         (cond
+           [(key=? a-key "r")
+            (initiate-game)
+           ]
+           [else ls])]))
 
 
 
