@@ -58,7 +58,8 @@
 
 ;END/FAIL SCENE SHOWN TO USER AFTER HAVING FAILED TO COMPLY WITH THE GAME'S RULES.
 ;; Teammates: uncomment the following definition please
-;(define end (bitmap ;.... path to the image we will put in order to show to user the fail scenery.
+(define end (bitmap "images/sm-images/gj.png"))
+;path to the image we will put in order to show to user the fail scenery.
             
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -77,22 +78,6 @@
 (define 3-POINTS 3)
 (define 4-POINTS 4)
 
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-;Starting position.
-
-;;Teammates, please adjust those numbers below to your preferences.Test them out please
-
-;(define POS-ORIG-BOX (make-posn 200 500)) 
-
-
-
-;Ending Position
-
-;;Teammates, please adjust those numbers below to your preferences.Test them out please
-
-;(define FIN-BOX (make-posn (+.....)
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -138,6 +123,22 @@
 ;SuperMario original position
 (define ORIGINAL-POS (make-posn 100 200)) ;NUMBERS ARE SUBJECT TO CHANGE.
 
+;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+;Starting position.
+
+;;Teammates, please adjust those numbers below to your preferences.Test them out please
+
+(define POS-ORIG-BOX (make-posn 200 500)) 
+
+
+
+;Ending Position
+
+;;Teammates, please adjust those numbers below to your preferences.Test them out please
+
+(define FIN-BOX (make-posn (+ (* 100 MOVE2-X) 400) (+ (* 100 MOVE2-Y) 700)))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -157,33 +158,8 @@
 
 
 
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-; BOX POSITIONS: CURRENT AND RANDOM ONE.
-;
-
-;UNCOMMENT AFTER HAVING UNCOMMENTED THE DEFINITION WHERE WE DEFINES POS-ORIG-BOX AND FIN-BOX
 
 
-;Current Object
-;(define current-scene-box (make-gamebox (random 0 3) POS-ORIG-BOX))
-
-;Random one
-;(define random-box (make-gamebox (random 0 3) FIN-BOX))
-
-
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-; Character resting
-;(define rest-scene-char (make-character 0 ORIGINAL-POS -1 SUPERMARIO2)) ;supermario2 is bound to change
-
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-; Initial World
-
-;WRITE INITIAL WORLD DEFINITION HERE
-
-;(define INITIAL-WORLD (make-world......))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -205,6 +181,9 @@
 
 
 
+
+
+
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ; Character State
@@ -223,12 +202,41 @@
 
 (define-struct character [position state frame points])
 
+
+;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+; Character resting
+(define rest-scene-char (make-character 0 ORIGINAL-POS -1 SUPERMARIO2)) ;supermario2 is bound to change
+
+
+
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;A gamebox is (make-box id pos)
 ;id is a number, pos is the position of the char.
 ;Header+Template+tests please
 (define-struct gamebox [id position])
 
+;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+; BOX POSITIONS: CURRENT AND RANDOM ONE.
+;
+
+;UNCOMMENT AFTER HAVING UNCOMMENTED THE DEFINITION WHERE WE DEFINES POS-ORIG-BOX AND FIN-BOX
+
+
+;Current Object
+(define rest-scene-box (make-gamebox (random 0 3) POS-ORIG-BOX))
+
+;Random one
+(define random-box (make-gamebox (random 0 3) FIN-BOX))
+
+;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+; Initial World
+
+;WRITE INITIAL WORLD DEFINITION HERE
+
+(define ORIGINAL-WORLD (make-world rest-scene-char ORIGINAL-POS rest-scene-box random-box #false)) 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;KEY HANDLERS
@@ -297,10 +305,10 @@
 
 (define (scenery w)
   (local [
-          
-          ; Create an image to show the points
-          ;  continue the design recipe.
-          (define points (text (string-append "Points: " (number->string (character-points (world-char w)))) 50 "solid" "red"))
+          ; Given a string, return an image showing the points
+          ; scenery: string -> image
+          ;interpretation: an image showing the points
+          (define points (text (string-append "points: " (number->string (character-points (world-char w)))) 50 "white"))
 
          
           ;counter in bottom of the page which  shows how much you are pressing the key, and if you fail the game with a certain amount of push given,
@@ -315,7 +323,7 @@
     [(= (character-state (world-char w)) -1) (place-image start 750 450 BG)]
     ;supermario movement
     
-    [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-Width 2) 850
+    [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 850
                        (place-image points 100 50
                                      (place-image
                                      (character-frame (world-char w))
@@ -325,127 +333,110 @@
                                                         (posn-x (gamebox-position (world-next-box w)))
                                                         (posn-y (gamebox-position (world-next-box w)))
                                                         (place-image (vector-ref boxes (gamebox-id (world-curr-box w)))
-                                                               (posn-x (gamebox-position (world-curr-box w)))
+                                                                (posn-x (gamebox-position (world-curr-box w)))
                                                                (posn-y (gamebox-position (world-curr-box w)))
                                                                 BG)))))])))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 (define (new-world w)
-  (local
-    ;design recipe
-    (define (move-char w) (make-world (make-character (character-points (world-char w))
-                                                      (make-posn
-                                                       ;one for the x and one for why
-                                                       (+ MOVE2-X (posn-x (character-position (world-char w))))
-                                                       (+ MOVE2-Y (posn-y (character-position (world-char w))))
-                                                       2 SUPERMARIO 3)
-                                                      (world-posn w) (world-curr-box w) (world-next-box w) (world-fail? w))))
+  (local [
+          ; World -> World
+          ; Giving a world in which the character has not reached the destination ig the spot of the dot
+          ; Add the small amount of the increment to reach that
+          (define (move-char w) (make-world (make-character (character-points (world-char w))
+                                                            (make-posn (+ MOVE2-X (posn-x (character-position (world-char w))))
+                                                                       (+ MOVE2-Y (posn-y (character-position (world-char w)))))
+                                                            2
+                                                            SUPERMARIO2) 
+                                            (world-posn w)
+                                            (world-curr-box w)
+                                            (world-next-box w)
+                                            (world-fail? w)))
+          ; Given a gamebox, return the newwly updaated gamebox with the character on it.
+          ; Interpretation: newly updated gamebox with char on top of it.
+          (define (move-box b) (make-gamebox (gamebox-id b)
+                                             (make-posn (- (posn-x (gamebox-position b)) MOVE2-X)
+                                                        (- (posn-y (gamebox-position b)) MOVE2-X))))]
+        ; RESET
+  (cond 
+        ; SUPERMARIO3
+        [(= (character-state (world-char w)) 2) 
+         ; Conditions, if char manages to arrive ending box.
+         (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
+                  (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
+             (move-char w) 
+             (if (and 
+                   (< (posn-x (world-posn w))
+                      (+ (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ;left
+                   (> (posn-x (world-posn w))
+                      (- (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ;right
+                   (> (posn-y (world-posn w))
+                      (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;up
+                   (< (posn-y (world-posn w))
+                      (+ (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)));down
+                 (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w))) 
+                                                              ORIGINAL-POS ; RESET
+                                                              0
+                                                              SUPERMARIO1)
+                                               ORIGINAL-POS ;RESET POSN
+                                              (make-gamebox (gamebox-id (world-next-box w)) POS-ORIG-BOX) 
+                                              (make-gamebox (random 0 3) FIN-BOX) 
+                                              (world-fail? w)))
+                 (begin (sleep 1) (make-world (make-character 0 ; unless
+                                                              ORIGINAL-POS ; RESET
+                                                              0
+                                                              SUPERMARIO1)
+                                              ORIGINAL-POS
+                                              (world-curr-box w)
+                                              (world-next-box w)
+                                              #true))))])))
+        ;try again
 
 
 
 
-
-;design recipe
-    (define (MOVE-BOX B) (make-gamebox B (gamebox-id B)
-                                       (make-posn
-                                        (- (posn-x (gamebox-position B)) MOVE2-X)
-                                        (- (posn-y (gamebox-position B)) MOVE2-Y))))
-
-
-
-
-
-    (cond
-      [(= (character-state (world-char w)) 2)
-
-       ;what happens if char makes it to the jumping final box
-       (if
-        (and
-         (< (posn-x (character-position (world-char w))) (posn-x world-pos w)))
-         (> (posn-y (character-position (world-char w))) (posn-y world-pos w)))
-       ;else continue moving character
-       (move-char w)
-
-       ;checks if we landed on the box.
-       (if
-        (and
-         ;move character right
-         (> (posn-x (world-posn w))
-            (- (posn-x (gamebox-position (world-next-box w))) BG-Width))
-         ;left
-         (< (posn-x (world-posn w))
-            (+ (posn-x (gamebox-position (world-next-box w))) BG-Width))
-         ;down
-          (< (posn-y (world-posn w))
-            (+ (posn-y (gamebox-position (world-next-box w))) BG-Height))
-          ;up
-          (> (posn-y (world-posn w))
-            (- (posn-y (gamebox-position (world-next-box w))) BG-Height)))
-        (begin (sleep 1)
-               (make-world
-                ;restore supermario to original resting position.
-                (make-character
-                 (add1
-                  (character-points (world-char w)))
-                                           ORIGINAL-POS
-                                           0
-                                           SUPERMARIO1)
-                ORIGINAL-POSN
-                (world-curr-box w)
-                (world-next-box w)
-                ;boolean value to show that it has failed.
-                ;show ending scene.
-                #true)))])
-
-                       [else w]))
+      
 
                 
          
       
                                         
-   ;tests
+;tests
 ;check random
 ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=check-random#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._check-random%29%29
 ;used  in advanced language only
 
-(check-random (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO2)
-                                     (make-posn 160 50)
-                                     (make-gamebox 0 (make-posn 50 50))
-                                     (make-gamebox 2 (make-posn 100 100))
-                                     #false))
-              (make-world (make-character 11 ORIGINAL-POS 0 SUPERMARIO1
-                                          ORIGINAL-POSN
-                                          (make-gamebox 2 POS-ORIG-BOX
-                                          (make-gamebox (random 0 3)
-                                          FIN-BOX
-                                          #false)))))
- 
-
-
-
-
+(check-random (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO2) 
+                               (make-posn 160 50)
+                               (make-gamebox 0 (make-posn 50 50))
+                               (make-gamebox 2 (make-posn 100 100))
+                               #false))
+              (make-world (make-character 11 ORIGINAL-POS 0 SUPERMARIO1)
+                                              ORIGINAL-POS 
+                                              (make-gamebox 2 POS-ORIG-BOX)
+                                              (make-gamebox (random 0 3) FIN-BOX)
+                                              #false))
 
 
 ;List (World State) , Key Input -> List (World State)
 ;checks for a key input and updates the bigbang world
 
-(define (key-handler ls a-key)
-  (cond [(= (sixth ls) 0)
-  (cond
-    [(key=? a-key "h") (hit ls)] ;hit
-    [(key=? a-key "s")
-     (stay-game ls)
-     ]
-    [else ls]
-    )
-  ]
-        [else
-         (cond
-           [(key=? a-key "r")
-            (initiate-game)
-           ]
-           [else ls])]))
+;(define (key-handler ls a-key)
+;  (cond [(= (sixth ls) 0)
+;  (cond
+;    [(key=? a-key "h") (hit ls)] ;hit
+;    [(key=? a-key "s")
+ ;    (stay-game ls)
+ ;    ]
+ ;   [else ls]
+ ;   )
+ ; ]
+  ;      [else
+  ;       (cond
+   ;        [(key=? a-key "r")
+   ;         (initiate-game)
+    ;       ]
+    ;       [else ls])]))
 
 
 
