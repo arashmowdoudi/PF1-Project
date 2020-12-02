@@ -31,7 +31,7 @@
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; width of background in the game.
-(define BG-WIDTH 2000) 
+(define BG-WIDTH 1999) 
 
 
 ;
@@ -156,21 +156,17 @@
 
 
 
-
-
-
-
-
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ; Interpretation: A world is a struct where
 ; char is Image
-; dot
+; posn is a Position
 ; curr-box is Posn
 ; next-box is Posn
 ; fail? is  Boolean
 
 ; Our jumping game, which consists of posn which is the distance of the jump from some point to the end,
+; char, which is the ingame character
 ; curr-box is the box we are currently on
 ; next-box is the box in which we intend to go.
 ; fail? if the user failed in complying with the game rules.
@@ -200,7 +196,9 @@
 
 
 
-(define-struct character [position state frame points])
+(define-struct character [points position state frame])
+
+
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -340,9 +338,9 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 (define (new-world w)
   (local [
-          ; World -> World
-          ; Giving a world in which the character has not reached the destination ig the spot of the dot
-          ; Add the small amount of the increment to reach that
+          ; Given a world, return a newly updated world.
+          ;move-char: World-> World
+          ;Interpretation: the newly updated world incremented.
           (define (move-char w) (make-world (make-character (character-points (world-char w))
                                                             (make-posn (+ MOVE2-X (posn-x (character-position (world-char w))))
                                                                        (+ MOVE2-Y (posn-y (character-position (world-char w)))))
@@ -365,7 +363,7 @@
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
              (move-char w) 
-             (if (and 
+             (if (and
                    (< (posn-x (world-posn w))
                       (+ (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ;left
                    (> (posn-x (world-posn w))
@@ -390,8 +388,9 @@
                                               (world-curr-box w)
                                               (world-next-box w)
                                               #true))))])))
-        ;try again
-
+        
+         
+         
 
 
 
