@@ -425,6 +425,7 @@
         ; RESET
   (cond 
         ; SUPERMARIO3
+    ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)           <<<<---------------------------------------------------------------------------------------------
         [(= (character-state (world-char w)) 2) 
          ; Conditions, if char manages to arrive ending box.
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
@@ -454,7 +455,7 @@
                                               ORIGINAL-POS
                                               (world-curr-box w)
                                               (world-next-box w)
-                                              #true))))])))
+                                              #t))))])))
         
          
          
