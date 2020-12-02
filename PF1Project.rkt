@@ -282,7 +282,30 @@
 
 
 
-;Tests/Examples
+;Tests/Examples                 
+                          
+(check-random (w-keyevent (make-world (make-character 10 (make-posn 50 50) 0 SUPERMARIO1)
+                                       (make-posn 100 100)
+                                       (make-gamebox 1 (make-posn 100 100))
+                                       (make-gamebox 2 (make-posn 200 200))
+                                       #false)
+                           " ")
+              (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
+                          (make-posn 300 200)
+                          (make-gamebox 1 (make-posn 100 100))
+                          (make-gamebox 2 (make-posn 200 200))
+                          #false))
+(check-random (w-keyevent (make-world (make-character 10 (make-posn 50 50) -1 SUPERMARIO1)
+                                       (make-posn 100 100)
+                                       (make-gamebox 1 (make-posn 100 100))
+                                       (make-gamebox 2 (make-posn 200 200))
+                                       #false)
+                           "\r")
+              (make-world (make-character 10 (make-posn 50 50) 0 SUPERMARIO1)
+                          ORIGINAL-POS
+                          (make-gamebox 1 (make-posn 100 100))
+                          (make-gamebox 2 (make-posn 200 200))
+                          #false))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;What happens after we have stopped clicking w? The character will start jumping
