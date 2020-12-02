@@ -283,29 +283,73 @@
 
 
 ;Tests/Examples                 
-                          
-(check-random (w-keyevent (make-world (make-character 10 (make-posn 50 50) 0 SUPERMARIO1)
+
+
+(check-random (w-keyevent
+               (make-world (make-character 10 ;MARIO POSN
+                                           (make-posn 50 50) -2 SUPERMARIO1) ;initial mario state
                                        (make-posn 100 100)
-                                       (make-gamebox 1 (make-posn 100 100))
-                                       (make-gamebox 2 (make-posn 200 200))
+                                       (make-gamebox 1 ;POSNS
+                                                     (make-posn 100 100))
+                                       (make-gamebox 2
+                                                     (make-posn 200 200))
                                        #false)
-                           " ")
+                           "\r") ;BOOL
+              (make-world (make-character 10
+                                          (make-posn 50 50) 0 SUPERMARIO1)
+                          ORIGINAL-POS
+                          (make-gamebox 1
+                                        (make-posn 100 100))
+                          (make-gamebox 2
+                                        (make-posn 200 200))
+                          #false))
+
+
+
+
+
+(check-random (w-keyevent
+               (make-world (make-character 10
+                                           (make-posn 50 50) -1 SUPERMARIO1) ;supermario it his initial state, he does not do anything
+                                       (make-posn 100 100) ;update position  of the initial and final boxes respectively.
+                                       (make-gamebox 1
+                                                     (make-posn 100 100)) ;posns of the start-end boxes respectively.
+                                       (make-gamebox 2
+                                                     (make-posn 200 200)) ;posns of the start-end boxes respectively.
+                                       #false) ;bool: you have not failed.
+                           "\r") ;without this argument, code is not going to compile (test is not going to pass).
+               ; then update the coordinates of the supermario while he is ready to jump, but REMEMBER, THE BOX COORDINATES  MUST NOT CHANGE. They will be the same.  
+              (make-world (make-character 10
+                                          (make-posn 50 50) 0 SUPERMARIO1) ;initial mario state
+                          ORIGINAL-POS
+                          (make-gamebox 1
+                                        (make-posn 100 100)) ;posns of the start-end boxes respectively.
+                          (make-gamebox 2
+                                        (make-posn 200 200)) ;posns of the start-end boxes respectively.
+                          #false))
+
+
+
+
+(check-random (w-keyevent ;use tests to check the coordinates of the boxes, the chars, and to see whether you fail or not.
+               (make-world (make-character 10
+                                           (make-posn 50 50) 0 SUPERMARIO1) ;supermario it his initial state, he does not do anything
+                                       (make-posn 100 100) ;update position  of the initial and final boxes respectively.
+                                       (make-gamebox 1
+                                                     (make-posn 100 100))
+                                       (make-gamebox 2
+                                                     (make-posn 200 200))
+                                       #false) ;bool: you have not failed.
+                        " "  ) ;-FIXED-without this argument, code is not going to compile (test is not going to pass).
+               ; then update the coordinates of the supermario while he is ready to jump, but REMEMBER, THE BOX COORDINATES  MUST NOT CHANGE. They will be the same.            
               (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
                           (make-posn 300 200)
-                          (make-gamebox 1 (make-posn 100 100))
-                          (make-gamebox 2 (make-posn 200 200))
-                          #false))
-(check-random (w-keyevent (make-world (make-character 10 (make-posn 50 50) -1 SUPERMARIO1)
-                                       (make-posn 100 100)
-                                       (make-gamebox 1 (make-posn 100 100))
-                                       (make-gamebox 2 (make-posn 200 200))
-                                       #false)
-                           "\r")
-              (make-world (make-character 10 (make-posn 50 50) 0 SUPERMARIO1)
-                          ORIGINAL-POS
-                          (make-gamebox 1 (make-posn 100 100))
-                          (make-gamebox 2 (make-posn 200 200))
-                          #false))
+                          (make-gamebox 1
+                                        (make-posn 100 100)) ;posns of the start-end boxes respectively.
+                          (make-gamebox 2
+                                        (make-posn 200 200)) ; >>>>>>>
+                          #false)) ; bool: failed
+
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;What happens after we have stopped clicking w? The character will start jumping
