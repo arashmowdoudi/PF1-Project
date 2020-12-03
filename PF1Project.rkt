@@ -381,7 +381,6 @@
 
 ;KEY HANDLERS
                             
-
 ;Given a keyevent, and in this case pressing w, return what will happen to the program.
 ;w-keyevent: World -> World
 ;Interpretation: the newly updated world function after having done a keyevent (pressed W)
