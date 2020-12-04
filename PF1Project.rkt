@@ -597,7 +597,9 @@
     ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)           <<<<---------------------------------------------------------------------------------------------
         [(= (character-state (world-char w)) 2)
          ; Conditions, if char manages to arrive ending box.
-         (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
+         (if
+          (and
+           (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
              (move-char w) 
              (if (and
