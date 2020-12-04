@@ -5,43 +5,64 @@
 ; GROUP PROJECT
 ; KELVIN LIKOLLARI
 ; ARASH MOWDOUDI
-; KIERAN MCKEE
-; MEMBER
+; KIERAN MCKEE (ABSENT - DO NOT KNOW WHERE HE IS - HE HAS BEEN OFFLINE SINCE 20 NOVEMBER AND NOT RESPONDING TO OUR MESSAGES)
+; MEMBERS
 
+;PS1: Numbers in all definitions are subject to change!
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Import the requirement libraries for startng the program.
+;Import the required libraries for starting the program.
 (require 2htdp/image)
 (require 2htdp/universe)
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-;Draw the original scene, a welcome screen for the user, telling him what you should do in order to win/fail the game.
-
-
-;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-; color of backgrouf with rgb
-(define BG-COLOR (make-color 60 100 50))
-
-
 ; source of colors information : https://htmlcolorcodes.com/
+; color of backgrouf with rgb
+; Interpretation: The color of the background
+; Header: (define bg-color (make-color integer integer integer))
+;Template: (define bg-color (make-color 221 211 28))
+
+;Code:
+(define BG-COLOR (make-color 255 255 255))
+ 
+
+
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; width of background in the game.
-(define BG-WIDTH 2000) 
+;Interpretation: the background scene parameters of the game (in this case, width)
+;header/template (define BG-WIDTH ...) where ... will be an int number.
+
+;Code:
+(define BG-WIDTH 1500) 
 
 
-;
+;Interpretation: the background scene parameters of the game (in this case, height).
+;header/template (define BG-HEIGHT ...) where ... will be an int number.
+;HEIGHT of background in the game.
+;Note to Teammates: height must be < width for better showing results.
 
-; HEIGHT of background in the game.
-(define BG-HEIGHT 1000)
+;Code:
+(define BG-HEIGHT 900)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ; it represent background of game.
+; Draw the background scene of the game.
+; A background is one of:
+; empty-scene where creates an empty scene (a white rectangle with a black outline.)
+; BG-Width Which is the width of the background
+; BG-Height Which is the height of the background.
+; BG-Color which will be the color of the background.
+; Interpretation: the background of our scenery.
+; Header: (define BG (... ... ... ...))
+; Template
+; (define BG (empty-scene BG-width Bg0Height BG-COLOUR))
+
+;Code:
 (define BG (empty-scene BG-WIDTH BG-HEIGHT BG-COLOR))
 
 
@@ -49,16 +70,29 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-;bitmap idea received from here: https://stackoverflow.com/questions/5355251/bitmap-in-dr-racket
+;bitmap idea received from here: https://www.reddit.com/r/Racket/comments/291g5b/loading_pngjpeg_image_in_racket/
+;bitmap implementation adopted from here : https://stackoverflow.com/questions/5355251/bitmap-in-dr-racket
 
-;;Teammates: uncomment the definition below for it to work.
+;Start/original scene shown to user after having cmd+r the program.
+;Interpretation: The starting scene of the Game.
+;Header: (define start-scene (bitmap "......"))
+;Template:
+;(define start-scene (bitmap "...path-to-image..."))
 
-;START/ORIGINAL SCENE SHOWN TO USER AFTER HAVING CMD+R THE PROGRAM.
- (define start (bitmap "images/sm-images/welcome.png"))
+;Code:
+(define start (bitmap "images/sm-images/welcome.png"))
 
-;END/FAIL SCENE SHOWN TO USER AFTER HAVING FAILED TO COMPLY WITH THE GAME'S RULES.
-;; Teammates: uncomment the following definition please
+
+
+;End/fail scene shown to user after having failed to comply with the game's rules.
+;Interpretation: The fail scene of the Game.
+;Header: (define end-scene (bitmap "......"))
+;Template
+;(define end (bitmap "-path-to-image"))
+
+;Code:
 (define end (bitmap "images/sm-images/gj.png"))
+
 ;path to the image we will put in order to show to user the fail scenery.
             
 
@@ -71,26 +105,39 @@
 ; the difficulty increases with every level passed aka the distance between the starting and
 ; the ending position increases so you should adjust the key-event in that way so that you 
 ; do not go out of bounds. For each level passed, the user collects +1 points to the accumulator.
+; Interpretations: The number of points per each successful attempt.
+; Header: (define P1 1) (define P2 2)
+; Template:
+; (define 1-Point 1)
+; (define 2-points 2)
 
-
+;Code:
 (define 1-POINT 1)
 (define 2-POINTS 2)
-(define 3-POINTS 3)
-(define 4-POINTS 4)
+;(define 3-POINTS 3)
+;(define 4-POINTS 4)
 
-
+;Tests/Examples
+(check-random 1-POINT 1)
+(check-random 2-POINTS 2)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
 ;BOX WIDTH/HEIGHT
-
 ;(c): https://docs.racket-lang.org/teachpack/2htdpimage.html#%28def._%28%28lib._2htdp%2Fimage..rkt%29._image-width%29%29
 
 ;Writing it after having written the boxes function.
 ;the box-width and height will be the same to the first box we will have in our game.  (starting-box). so we will use the starting box.
+;Given the definitions of the box width & height, upload their respective pictures.
+;Interpretation: The image showing width and the height of the boxes.
+;Header (define BOX-HEIGHT (image-height (bitmap "........"))) , similarly we do the width
+;Template: (define BOX-HEIGHT (image-height (bitmap "path-to-image")))
+
+;Code:
 (define BOX-WIDTH (image-width  (bitmap "images/sm-images/starting-box.png")))
+
 (define BOX-HEIGHT (image-height (bitmap "images/sm-images/starting-box.png")))
 
 
@@ -100,9 +147,20 @@
 
 ;Character Movement
 ;X Axis
+;Interpretation: The 2 kind of movements on the X axis, 1 big and 1 small.
+;Header: (define movex + ....)
+;(define movex ....)
+
+;Template (define MOVE-X + number)
+;(define MOVE2-X + number) 
 (define MOVE-X +200)
+
 (define MOVE2-X 20)
+
 ;Y Axis
+;Interpretation: The 2 kind of movements on the Y axis, 1 big and 1 small.
+;Similar template to previous defs
+;Code:
 (define MOVE-Y +100)
 (define MOVE2-Y 10)
 
@@ -110,43 +168,85 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;Game Character:
+;Interpretation: The initial state of supermario.
+;Header/Template: similar to previous examples when used bitmap.
+;Code:
 (define SUPERMARIO1 (bitmap "images/sm-images/relax.png"))
 
 
 ;SuperMario getting ready to jump
+;Interpretation: a jumping state of our character.
+;Code:
 (define SUPERMARIO2 (bitmap "images/sm-images/readytojump.png"))
 
 
 ;SuperMario on the jumping state.
+;Interpretation: the flying in-game character. :)
+;Code:
 (define SUPERMARIO3 (bitmap "images/sm-images/sm2.png"))
 
 ;SuperMario original position
-(define ORIGINAL-POS (make-posn 100 200)) ;NUMBERS ARE SUBJECT TO CHANGE.
+;Interpretation: the original position onto the box of SuperMario.
+;Code:
+(define ORIGINAL-POS (make-posn 300 550)) ;TeamMates: NUMBERS ARE SUBJECT TO CHANGE.
+
+
+;Tests/Examples
+(check-random ORIGINAL-POS (make-posn 300 550))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ;Starting position.
 
-;;Teammates, please adjust those numbers below to your preferences.Test them out please
+;Teammates, please adjust those numbers below to your preferences.Test them out please
+;Interpretation: position of the original/starting box.
+;A Box is a:
+;(make-posn Number Number))
+;Where number number are the x and y coordinates respectively of the original box.
+;Header: (define ORIG (make-posn ... ...))
+;Template
+; (define original-box (make-posn 100 100))
 
-(define POS-ORIG-BOX (make-posn 200 500)) 
+;Code:
+(define POS-ORIG-BOX (make-posn 300 700))
+
+(check-random POS-ORIG-BOX (make-posn 300 700))
 
 
 
 ;Ending Position
 
-;;Teammates, please adjust those numbers below to your preferences.Test them out please
+;Teammates, please adjust those numbers below to your preferences.Test them out please
+;Given the starting box position, create the final one.
+;Interpretation: The position of the juping-to box (final box)
+;A box is a:
+;(make-posn Number Number))
+;Where number number are the x and y coordinates respectively of the original box.
+;But the final box has not the same position, so we must apply the small movements defined previously.
+;Header: (define final (make-posn (.. (..._... ) (.... (...) ...)
+;Template
+;(define FIN-BOX (make-posn ( .. (.. number number) number ) (... (... number number) number)))))
 
-(define FIN-BOX (make-posn (+ (* 100 MOVE2-X) 400) (+ (* 100 MOVE2-Y) 700)))
+;Code:
+(define FIN-BOX (make-posn (+ (* 80 MOVE2-X) 300) (+ (* 80 MOVE2-Y) 700)))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ;Starting and ending objects.
-;Documentation: https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._make-vector%29%29
-;Following definiton works, we just need to upload the images through the respected foldier stored in our PC.
 
+;Documentation: https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._make-vector%29%29
+;Teammates: Following definiton works, we just need to upload the images through the respected folder stored in our PC.
+;Boxes Created & Uploaded using bitmap.
+;Interpretation: Boxes in all its 3 states,
+;starting, ending ------- starting, ending2
+;Header
+;(define box (make-vector ...) (.... box ... (bitmap "...."....)))
+;Template:
+;(define boxes (make-vector number-of-vectors (vector-set boxes starting-box (bitmap "-path-to-image") ------> similar, but now add box at ending1 position and box at ending 2 position.
+
+;Code:
 (define boxes (make-vector 3))  ;boxes = START & END1 & END2 (for the two levels) 
 ; https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._vector-set%21%29%29
 (vector-set! boxes 0 (bitmap "images/sm-images/starting-box.png"))
@@ -156,27 +256,23 @@
 
 
 
-
-
-
-
-
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-; Interpretation: A world is a struct where
+; Interpretation: A world is a make-world where:
 ; char is Image
-; dot
+; posn is a Position
 ; curr-box is Posn
 ; next-box is Posn
 ; fail? is  Boolean
-
+; Given a world, return a newly updated world with its parameters updated.
+; world : World -> World
 ; Our jumping game, which consists of posn which is the distance of the jump from some point to the end,
+; char, which is the ingame character
 ; curr-box is the box we are currently on
 ; next-box is the box in which we intend to go.
-; fail? if the user failed in complying with the game rules.
+; fail? if the user failed in complying with the game rules
 
-
-
+;Code;
 (define-struct world [char posn curr-box next-box fail?])
 
 
@@ -187,46 +283,80 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ; Character State
-; A character is a struct where:
+; a character is one of (make-character points position state frame) where:
 ; position is Posn
 ; State is Number [0,2]
 ; frame is Image
 ; points is Number
+; points are the points accumulated by the user using the character.
+; Interpretation: position is the Char's pos, state is the state of the character (what he is doing),
+; frame is the image of our character complying with our key handlers,
+; points are the points accumulated by the character.
 
-;points are the points accumulated by the user using the character.
-;Interpretation: position is the Char's pos, state is the state of the character (what he is doing),
-;frame is the image of our character complying with our key handlers,
-;points are the points accumulated by the character.
-
-
-
-(define-struct character [position state frame points])
-
+;Code:
+(define-struct character [points position state frame])
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ; Character resting
-(define rest-scene-char (make-character 0 ORIGINAL-POS -1 SUPERMARIO2)) ;supermario2 is bound to change
+; A resting-scene-char is a (make-character number pos number frame)
+; Where
+; Number is the position numbers of the character
+; pos is the original position of the character.
+; frame is the returnable image of supermario at his starting state.
+; Interpretation: Game Character at his resting scene.
+; Header: (define (resting-scene-char (make-character number pos number frame)
+; Template:
+; (define rest-scene-char (make-character number ORIGINAL-POS number SUPERMARIO1 (starting state)))
+
+;Code:
+(define rest-scene-char (make-character 0 ORIGINAL-POS -1 SUPERMARIO1)) ;supermario2 is bound to change
 
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;A gamebox is (make-box id pos)
-;id is a number, pos is the position of the char.
-;Header+Template+tests please
+;A gamebox is (make-box id pos) where:
+;id is a number
+;pos is the position of the character.
+;The boxes that we are going to play with.
+;Header: (define-struct gamebox [.. ...])
+;Template:
+;(define-struct gamebox [number number])
+
+;Code:
 (define-struct gamebox [id position])
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-; BOX POSITIONS: CURRENT AND RANDOM ONE.
-;
-
-;UNCOMMENT AFTER HAVING UNCOMMENTED THE DEFINITION WHERE WE DEFINES POS-ORIG-BOX AND FIN-BOX
-
+;Box Positions:
+;Current Box
+;Random box
 
 ;Current Object
+;The starting box is a (make-gamebox (random number number) POS)
+;Where random are random coordinates of the starting scene box
+;pos is the position of the original box.
+;Interpretation: the starting box scene and its coordinates.
+;Header: (define rest-scene-box (make-gamebox (random .. ..) pos)
+;Template
+;(define rest-scene-box (make-gamebox (random number number) POS-ORIG-BOX))
+
+;Code
 (define rest-scene-box (make-gamebox (random 0 3) POS-ORIG-BOX))
 
+
+
+
+
 ;Random one
+;A randome box is a (make-gamebox (random number number) final-pos)
+;Where random are random coordinates of the random scene box
+;pos is the position of the original box.
+;Interpretation: the random box scene and its coordinates.
+;Header: (define random-box (make-gamebox (random .. ..) final-pos)
+;Template
+;(define random-box (make-gamebox (random number number) final-box))
+
+;Code:
 (define random-box (make-gamebox (random 0 3) FIN-BOX))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -234,31 +364,49 @@
 
 ; Initial World
 
-;WRITE INITIAL WORLD DEFINITION HERE
+; Interpretation: the original world with nothing moved on it.
+; An original-world is a (make-world rest-scene-char ORIGINAL-POS rest-scene box random box boolean) where
+; rest-scene char is supermario at his initial state.
+; original-pos is the original position of our character.
+; rest-scene is the scenery that contains also the box at its initial position.
+; random-box is the random box we have implemented somewhere in the world.
+; boolean checks whether the world has changed or not.
+; Header: (define original-wolrd (make-world ... ... ... ... boolean)
+; Template
+; (define ORIGINAL-WORLD (make-world rest-scene-char ORIGINAL-POS rest-scene-box random-box #boolean)) 
+
 
 (define ORIGINAL-WORLD (make-world rest-scene-char ORIGINAL-POS rest-scene-box random-box #false)) 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;KEY HANDLERS
-;TEAMMATES- WRITE THE DESIGN RECIPE OF THE KEYEVENT OF PRESSING W
                             
-                            
-;; commented the following definition because we must create image of our character supermario in all its three states.
+;Given a keyevent, and in this case pressing w, return what will happen to the program.
+;w-keyevent: World -> World
+;Interpretation: the newly updated world function after having done a keyevent (pressed W)
+;Header:
+;(define (wkeyevent .. ..) (cond [( ........) ...]
+;Template:
+;(define (w-keyeventt w key)
+;(cond
+;(key=? ..... ( ..... ) ....)
+
+;Code
 (define (w-keyevent w key)
   (cond
-    [(and (key=? key " ") (not (= (character-state (world-char w)) 2)))
+    [(and (key=? key " ") (not (= (character-state (world-char w)) 2))) ;what happens if we press w
          (make-world
           (make-character (character-points (world-char w))
-                                      (make-posn
+                                      (make-posn ;position of the char.
                                       (posn-x (character-position (world-char w)))
                                       (posn-y (character-position (world-char w)))) 1 SUPERMARIO2)                             
                       (make-posn
-                      (+ MOVE-X (posn-x (world-posn w)))
+                      (+ MOVE-X (posn-x (world-posn w)))   ;posn of the char
                       (+ MOVE-Y (posn-y (world-posn w))))
                      
-                     (world-curr-box w)
+                     (world-curr-box w) ;current box and next box.
                      (world-next-box w)
-                     (world-fail? w))]
+                     (world-fail? w))] ;no fail.
 
 ;Or case, used when the program has just started executing or/and after having failed.
 
@@ -284,12 +432,86 @@
 
 
 
-;Tests/Examples
+;Tests/Examples                 
+
+
+(check-random (w-keyevent
+               (make-world (make-character 10 ;MARIO POSN
+                                           (make-posn 50 50) -2 SUPERMARIO1) ;initial mario state
+                                       (make-posn 100 100)
+                                       (make-gamebox 1 ;POSNS
+                                                     (make-posn 100 100))
+                                       (make-gamebox 2
+                                                     (make-posn 200 200))
+                                       #false) ;boolean, failed.
+                           "\r") 
+              (make-world (make-character 10
+                                          (make-posn 50 50) 0 SUPERMARIO1)
+                          ORIGINAL-POS
+                          (make-gamebox 1
+                                        (make-posn 100 100))
+                          (make-gamebox 2
+                                        (make-posn 200 200))
+                          #false)) ;boolean, failed.
+
+
+
+
+
+(check-random (w-keyevent
+               (make-world (make-character 10
+                                           (make-posn 50 50) -1 SUPERMARIO1) ;supermario it his initial state, he does not do anything
+                                       (make-posn 100 100) ;update position  of the initial and final boxes respectively.
+                                       (make-gamebox 1
+                                                     (make-posn 100 100)) ;posns of the start-end boxes respectively.
+                                       (make-gamebox 2
+                                                     (make-posn 200 200)) ;posns of the start-end boxes respectively.
+                                       #false) ;bool: you have not failed.
+                           "\r") ;without this argument, code is not going to compile (test is not going to pass).
+               ; then update the coordinates of the supermario while he is ready to jump, but REMEMBER, THE BOX COORDINATES  MUST NOT CHANGE. They will be the same.  
+              (make-world (make-character 10
+                                          (make-posn 50 50) 0 SUPERMARIO1) ;initial mario state
+                          ORIGINAL-POS
+                          (make-gamebox 1
+                                        (make-posn 100 100)) ;posns of the start-end boxes respectively.
+                          (make-gamebox 2
+                                        (make-posn 200 200)) ;posns of the start-end boxes respectively.
+                          #false))
+
+
+
+
+(check-random (w-keyevent ;use tests to check the coordinates of the boxes, the chars, and to see whether you fail or not.
+               (make-world (make-character 10
+                                           (make-posn 50 50) 0 SUPERMARIO1) ;supermario it his initial state, he does not do anything
+                                       (make-posn 100 100) ;update position  of the initial and final boxes respectively.
+                                       (make-gamebox 1
+                                                     (make-posn 100 100))
+                                       (make-gamebox 2
+                                                     (make-posn 200 200))
+                                       #false) ;bool: you have not failed.
+                        " "  ) ;-FIXED-without this argument, code is not going to compile (test is not going to pass).
+               ; then update the coordinates of the supermario while he is ready to jump, but REMEMBER, THE BOX COORDINATES  MUST NOT CHANGE. They will be the same.            
+              (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
+                          (make-posn 300 200)
+                          (make-gamebox 1
+                                        (make-posn 100 100)) ;posns of the start-end boxes respectively.
+                          (make-gamebox 2
+                                        (make-posn 200 200)) ; >>>>>>>
+                          #false)) ; bool: failed
+
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 ;What happens after we have stopped clicking w? The character will start jumping
+;Given a keyevent like before, what will happen after we have clicked on it.
+;Interpretation: world after having executed the keyhandler event.
+;Header: (define (afterw ... ....)
+;Template:
+;(define (afterw keypressed  key) (cond .. (key =? ... (make-wolrd (make-char ...... ).... )... (make-posn (posn-x..... (posn y)))))
 
-
+;Code:
 (define (after-w w key)
   (cond
     [(key=? key " ") (make-world (make-character (character-points (world-char w))
@@ -303,16 +525,21 @@
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+;Interpretation: Scenery of our game after pressing w.
 (define (scenery w)
   (local [
           ; Given a string, return an image showing the points
           ; scenery: string -> image
-          ;interpretation: an image showing the points
+          ;interpretation: an image showing the points.
           (define points (text (string-append "points: " (number->string (character-points (world-char w)))) 50 "white"))
 
          
           ;counter in bottom of the page which  shows how much you are pressing the key, and if you fail the game with a certain amount of push given,
           ;depending on if the attempt was low or more than it should, you see the counter all the times you attempt jumping, and act accordingly (use more or less power).
+          ;header (define (counter .. (shapetobeused number color))
+          ;template:
+          ;(Define (counter coun) (rectangle number "color"))
+          ;Code:
           (define (counter c) (rectangle 80 "solid" "black"))
           ] 
   (cond
@@ -338,44 +565,52 @@
                                                                 BG)))))])))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-(define (new-world w)
+(define (new-world w) ;https://stackoverflow.com/questions/4560926/use-of-local-in-racket-scheme |||||||| https://docs.racket-lang.org/reference/local.html 
   (local [
-          ; World -> World
-          ; Giving a world in which the character has not reached the destination ig the spot of the dot
-          ; Add the small amount of the increment to reach that
+          ; Given a world, return a newly updated world.
+          ;move-char: World-> World
+          ;Interpretation: the newly updated world incremented.
           (define (move-char w) (make-world (make-character (character-points (world-char w))
-                                                            (make-posn (+ MOVE2-X (posn-x (character-position (world-char w))))
+                                                            (make-posn (+ MOVE2-X (posn-x (character-position (world-char w))))  ;return the updated position of the ingame character at x and y coordinates, plus update points
                                                                        (+ MOVE2-Y (posn-y (character-position (world-char w)))))
-                                                            2
+                                                            1
                                                             SUPERMARIO2) 
-                                            (world-posn w)
+                                            (world-posn w)          
                                             (world-curr-box w)
                                             (world-next-box w)
                                             (world-fail? w)))
-          ; Given a gamebox, return the newwly updaated gamebox with the character on it.
+          ; a gamebox is one of:
+          ; (make-gamebox (gamebox-id b)
+          ; where gamebox-id shows the box we're in right now.
+          ; b the position of the gamebox.
+          ; Given a gamebox, return the newly updated gamebox with the character on it.
           ; Interpretation: newly updated gamebox with char on top of it.
+          ; header (define (gamebox g) (.... (.. ..) (make-posn (........) ......).....)
+          ;Template:
+          ;(define (gamebox g) (make-gamebox (gamebox-id g) (make-posn (x .....) (y ....))))
           (define (move-box b) (make-gamebox (gamebox-id b)
                                              (make-posn (- (posn-x (gamebox-position b)) MOVE2-X)
                                                         (- (posn-y (gamebox-position b)) MOVE2-X))))]
-        ; RESET
+        ; RESET THE SCENERY.
   (cond 
         ; SUPERMARIO3
-        [(= (character-state (world-char w)) 2) 
+    ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)           <<<<---------------------------------------------------------------------------------------------
+        [(= (character-state (world-char w)) 2)
          ; Conditions, if char manages to arrive ending box.
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
              (move-char w) 
-             (if (and 
+             (if (and
                    (< (posn-x (world-posn w))
-                      (+ (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ;left
+                      (+ (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the left.
                    (> (posn-x (world-posn w))
-                      (- (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ;right
+                      (- (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the right.
                    (> (posn-y (world-posn w))
-                      (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;up
+                      (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;Instead this moves the char up
                    (< (posn-y (world-posn w))
-                      (+ (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)));down
-                 (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w))) 
-                                                              ORIGINAL-POS ; RESET
+                      (+ (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT))); While here we're moving the char down.
+                 (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w)))  ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
+                                                              ORIGINAL-POS ; RESET TO ORIGINAL POSITION.
                                                               0
                                                               SUPERMARIO1)
                                                ORIGINAL-POS ;RESET POSN
@@ -383,15 +618,16 @@
                                               (make-gamebox (random 0 3) FIN-BOX) 
                                               (world-fail? w)))
                  (begin (sleep 1) (make-world (make-character 0 ; unless
-                                                              ORIGINAL-POS ; RESET
+                                                              ORIGINAL-POS ; RESET TO ORIGINAL POSITION
                                                               0
                                                               SUPERMARIO1)
                                               ORIGINAL-POS
                                               (world-curr-box w)
                                               (world-next-box w)
-                                              #true))))])))
-        ;try again
-
+                                              #t))))])))     ;Q: is there any difference between writing #t and #true?
+        
+         
+         
 
 
 
@@ -406,7 +642,8 @@
 ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=check-random#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._check-random%29%29
 ;used  in advanced language only
 
-(check-random (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO2) 
+(check-random (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO2) ;it must be 2 SUPERMARIO2 because we have had before :  ->>>>> [(= (character-state (world-char w)) 2) <<<<<<-
+
                                (make-posn 160 50)
                                (make-gamebox 0 (make-posn 50 50))
                                (make-gamebox 2 (make-posn 100 100))
@@ -416,6 +653,11 @@
                                               (make-gamebox 2 POS-ORIG-BOX)
                                               (make-gamebox (random 0 3) FIN-BOX)
                                               #false))
+
+
+
+
+
 
 
 ;List (World State) , Key Input -> List (World State)
@@ -441,8 +683,8 @@
 
 
 
-;nothing-world
-;HAVE FUN PLAYING THE GAME.
+;Nothing -> World
+;Enjoy the jumping SuperMario Game!
 (define (main _)
   (big-bang ORIGINAL-WORLD
     [to-draw scenery]
@@ -451,7 +693,7 @@
     [on-tick new-world]))
 (main 0)
      
-;no tests required.    
+;no tests required in this case.  
 
 
 
