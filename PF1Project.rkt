@@ -574,11 +574,14 @@
                                                             (make-posn (+ MOVE2-X (posn-x (character-position (world-char w))))  ;return the updated position of the ingame character at x and y coordinates, plus update points
                                                                        (+ MOVE2-Y (posn-y (character-position (world-char w)))))
                                                             1
-                                                            SUPERMARIO2) 
-                                            (world-posn w)          
+                                                            SUPERMARIO2)
+                                            (world-posn w)
                                             (world-curr-box w)
                                             (world-next-box w)
                                             (world-fail? w)))
+          
+                                            
+                                            
           ; a gamebox is one of:
           ; (make-gamebox (gamebox-id b)
           ; where gamebox-id shows the box we're in right now.
@@ -591,53 +594,48 @@
           (define (move-box b) (make-gamebox (gamebox-id b)
                                              (make-posn (- (posn-x (gamebox-position b)) MOVE2-X)
                                                         (- (posn-y (gamebox-position b)) MOVE2-X))))]
-        ; RESET THE SCENERY.
-  (cond 
-        ; SUPERMARIO3
-    ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)           <<<<---------------------------------------------------------------------------------------------
-        [(= (character-state (world-char w)) 2)
-         ; Conditions, if char manages to arrive ending box.
-         (if
-          (and
-           (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
+; RESET THE SCENERY.
+    (cond       ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)           <<<<--------------------------------------------------------------------------------------
+      [(= (character-state (world-char w)) 2)
+       ; Conditions, if char manages to arrive ending box
+       (if
+        (and
+          (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
-             (move-char w) 
-             (if (and
-                   (< (posn-x (world-posn w))
-                      (+ (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the left.
-                   (> (posn-x (world-posn w))
-                      (- (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the right.
-                   (> (posn-y (world-posn w))
-                      (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;Instead this moves the char up
-                   (< (posn-y (world-posn w))
-                      (+ (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT))); While here we're moving the char down.
-                 (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w)))  ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
-                                                              ORIGINAL-POS ; RESET TO ORIGINAL POSITION.
-                                                              0
-                                                              SUPERMARIO1)
-                                               ORIGINAL-POS ;RESET POSN
-                                              (make-gamebox (gamebox-id (world-next-box w)) POS-ORIG-BOX) 
-                                              (make-gamebox (random 0 3) FIN-BOX) 
-                                              (world-fail? w)))
-                 (begin (sleep 1) (make-world (make-character 0 ; unless
-                                                              ORIGINAL-POS ; RESET TO ORIGINAL POSITION
-                                                              0
-                                                              SUPERMARIO1)
-                                              ORIGINAL-POS
-                                              (world-curr-box w)
-                                              (world-next-box w)
-                                              #t))))])))     ;Q: is there any difference between writing #t and #true?
-        
-         
-         
+        (move-char w)
+        (if
+         (and
+          (< (posn-x (world-posn w))
+             (+ (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the left.
+          (> (posn-x (world-posn w))
+             (- (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the right.
+          (> (posn-y (world-posn w))
+             (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;Instead this moves the char up
+          (< (posn-y (world-posn w))
+             (+ (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT))); While here we're moving the char down.
+         (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w)))  ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||| https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
+                                                      ORIGINAL-POS ; RESET TO ORIGINAL POSITION.
+                                                      0
+                                                      SUPERMARIO1)
+                                      ORIGINAL-POS ;RESET POSN
+                                      (make-gamebox (gamebox-id (world-next-box w)) POS-ORIG-BOX)
+                                      (make-gamebox (random 0 3) FIN-BOX)
+                                      (world-fail? w)))
+         (begin (sleep 1) (make-world (make-character 0 ; unless
+                                                      ORIGINAL-POS ; RESET TO ORIGINAL POSITION
+                                                      0
+                                                      SUPERMARIO1)
+                                      ORIGINAL-POS
+                                      (world-curr-box w)
+                                      (world-next-box w)
+                                      #true))))])))     ;Q: is there any difference between writing #t and #true?
+                                      
+                                                      
+                                      
+                                      
+                                                      
+                                                      
 
-
-
-      
-
-                
-         
-      
                                         
 ;tests
 ;check random
