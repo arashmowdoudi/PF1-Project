@@ -5,13 +5,13 @@
 ; GROUP PROJECT
 ; KELVIN LIKOLLARI
 ; ARASH MOWDOUDI
-; KIERAN MCKEE
-; MEMBER
+; KIERAN MCKEE (ABSENT - DO NOT KNOW WHERE HE IS - HE HAS BEEN OFFLINE SINCE 20 NOVEMBER AND NOT RESPONDING TO OUR MESSAGES)
+; MEMBERS
 
+;PS1: Numbers in all definitions are subject to change!
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;Import the requirement libraries for startng the program.
-;image and universe
+;Import the required libraries for starting the program.
 (require 2htdp/image)
 (require 2htdp/universe)
 
@@ -37,7 +37,7 @@
 ;header/template (define BG-WIDTH ...) where ... will be an int number.
 
 ;Code:
-(define BG-WIDTH 1999) 
+(define BG-WIDTH 1500) 
 
 
 ;Interpretation: the background scene parameters of the game (in this case, height).
@@ -46,7 +46,7 @@
 ;Note to Teammates: height must be < width for better showing results.
 
 ;Code:
-(define BG-HEIGHT 1000)
+(define BG-HEIGHT 900)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -188,11 +188,11 @@
 ;SuperMario original position
 ;Interpretation: the original position onto the box of SuperMario.
 ;Code:
-(define ORIGINAL-POS (make-posn 100 200)) ;TeamMates: NUMBERS ARE SUBJECT TO CHANGE.
+(define ORIGINAL-POS (make-posn 300 550)) ;TeamMates: NUMBERS ARE SUBJECT TO CHANGE.
 
 
 ;Tests/Examples
-(check-random ORIGINAL-POS (make-posn 100 200))
+(check-random ORIGINAL-POS (make-posn 300 550))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -209,9 +209,9 @@
 ; (define original-box (make-posn 100 100))
 
 ;Code:
-(define POS-ORIG-BOX (make-posn 200 500))
+(define POS-ORIG-BOX (make-posn 300 700))
 
-(check-random POS-ORIG-BOX (make-posn 200 500))
+(check-random POS-ORIG-BOX (make-posn 300 700))
 
 
 
@@ -229,7 +229,7 @@
 ;(define FIN-BOX (make-posn ( .. (.. number number) number ) (... (... number number) number)))))
 
 ;Code:
-(define FIN-BOX (make-posn (+ (* 100 MOVE2-X) 400) (+ (* 100 MOVE2-Y) 700)))
+(define FIN-BOX (make-posn (+ (* 80 MOVE2-X) 300) (+ (* 80 MOVE2-Y) 700)))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -595,7 +595,7 @@
   (cond 
         ; SUPERMARIO3
     ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)           <<<<---------------------------------------------------------------------------------------------
-        [(= (character-state (world-char w)) 1)
+        [(= (character-state (world-char w)) 2)
          ; Conditions, if char manages to arrive ending box.
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
@@ -606,7 +606,7 @@
                    (> (posn-x (world-posn w))
                       (- (posn-x (gamebox-position (world-next-box w))) BOX-WIDTH)) ; This moves the char to the right.
                    (> (posn-y (world-posn w))
-                      (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;Instead this moved the char up
+                      (- (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT)) ;Instead this moves the char up
                    (< (posn-y (world-posn w))
                       (+ (posn-y (gamebox-position (world-next-box w))) BOX-HEIGHT))); While here we're moving the char down.
                  (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w)))  ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
@@ -642,7 +642,8 @@
 ;https://docs.racket-lang.org/htdp-langs/advanced.html?q=check-random#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._check-random%29%29
 ;used  in advanced language only
 
-(check-random (new-world (make-world (make-character 10 (make-posn 80 50) 1 SUPERMARIO2) 
+(check-random (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO2) ;it must be 2 SUPERMARIO2 because we have had before :  ->>>>> [(= (character-state (world-char w)) 2) <<<<<<-
+
                                (make-posn 160 50)
                                (make-gamebox 0 (make-posn 50 50))
                                (make-gamebox 2 (make-posn 100 100))
