@@ -37,7 +37,7 @@
 ;header/template (define BG-WIDTH ...) where ... will be an int number.
 
 ;Code:
-(define BG-WIDTH 1500) 
+(define BG-WIDTH 1999) 
 
 
 ;Interpretation: the background scene parameters of the game (in this case, height).
@@ -46,7 +46,7 @@
 ;Note to Teammates: height must be < width for better showing results.
 
 ;Code:
-(define BG-HEIGHT 900)
+(define BG-HEIGHT 999)
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
