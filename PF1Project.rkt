@@ -622,7 +622,7 @@
                                       (make-gamebox (random 0 3) FIN-BOX)
                                       (world-fail? w)))
          (begin (sleep 1) (make-world (make-character 0 ; unless
-                                                      ORIGINAL-POS ; RESET TO ORIGINAL POSITION
+                                                      ORIGINAL-POS ; RESET TO ORIGINAL POSITION 
                                                       0
                                                       SUPERMARIO1)
                                       ORIGINAL-POS
@@ -656,10 +656,6 @@
 
 
 
-
-
-
-
 ;List (World State) , Key Input -> List (World State)
 ;checks for a key input and updates the bigbang world
 
@@ -684,7 +680,7 @@
 
 
 ;Nothing -> World
-;Enjoy the jumping SuperMario Game!
+;Enjoy the jumping SuperMario Game! 
 (define (main _)
   (big-bang ORIGINAL-WORLD
     [to-draw scenery]
