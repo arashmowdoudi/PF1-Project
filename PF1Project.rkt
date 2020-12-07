@@ -812,6 +812,7 @@
 ;REST-SCENE-BOX is used here before its definition
 ;REST-SCENE-CHAR is used here before its definition
 ;RANDOM-BOX is used here before its definition
+;MAJOR TIME CONSUMING ISSUES WITH SLOW RACKET RUNNING, HAD TO KILL APP AND RESTART LIKE 20 TIMES
 
 
                 
