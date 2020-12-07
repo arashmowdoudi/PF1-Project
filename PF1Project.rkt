@@ -285,7 +285,7 @@
 ; Character State
 ; a character is one of (make-character points position state frame) where:
 ; position is Posn
-; State is Number [0,2]
+; State is an Image
 ; frame is Image
 ; points is Number
 ; points are the points accumulated by the user using the character.
