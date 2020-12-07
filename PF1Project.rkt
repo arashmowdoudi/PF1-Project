@@ -791,7 +791,7 @@
   (big-bang ORIGINAL-WORLD
     [to-draw scenery]
     [on-key w-keyaction]
-    [on-release after-w] ;this is pretty much useless.
+    [on-release after-w] 
     [on-tick new-world]))
 
 (main )
