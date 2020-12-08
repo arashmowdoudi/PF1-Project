@@ -85,7 +85,7 @@
 ;Header: (define end-scene (bitmap "......"))
 ;Template
 ;(define end (bitmap "-path-to-image"))
- 
+
 ;Code:
 (define end (bitmap "images/sm-images/gj.png"))
 
@@ -219,7 +219,7 @@
 
 
 
- 
+
 
 
 
@@ -243,7 +243,7 @@
 ;(define FIN-BOX (make-posn ( .. (.. number number) number ) (... (... number number) number)))))
 
 ;Code:
-(define POS-NEXT-BOX (make-posn (+ (* 80 smallx) 500) (+ (* 80 smally) 1000)))
+(define POS-NEXT-BOX (make-posn (+ (* 80 smallx) 300) (+ (* 80 smally) 700)))
 
 
 
