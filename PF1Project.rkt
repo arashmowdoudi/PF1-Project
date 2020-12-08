@@ -446,7 +446,7 @@
 ;(cond
 ;(key=? ..... ( ..... ) ....)
 
-;Code
+;Code 
 (define (w-keyaction w key)
   (cond
     [(and (key=? key " ") (not (= (character-state (world-char w)) 2))) ;what happens if we press space. Idea got from https://docs.racket-lang.org/teachpack/2htdpuniverse.html?q=space#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._space%29%29
