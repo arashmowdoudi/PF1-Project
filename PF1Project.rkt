@@ -152,14 +152,14 @@
 ;Template (define MOVE-X + number)
 ;(define MOVE2-X + number)
 (define MOVE-X +50)
-(define smallx 6)
+(define smallx 16)
  
 ;Y Axis
 ;Interpretation: The 2 kind of movements on the Y axis, 1 big and 1 small.
 ;Similar template to previous defs
 ;Code:
 (define MOVE-Y -55)
-(define smally -8)
+(define smally -2)
 
 
 
@@ -220,7 +220,7 @@
  
  
 
-
+ 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -242,7 +242,7 @@
 ;(define FIN-BOX (make-posn ( .. (.. number number) number ) (... (... number number) number)))))
 
 ;Code:
-(define POS-NEXT-BOX (make-posn 1500 650))
+(define POS-NEXT-BOX (make-posn 1500 470))
 
 
 
@@ -286,7 +286,7 @@
  
 
 
-
+ 
 
 
 
@@ -496,13 +496,13 @@
                                            (make-posn 50 50) 0 SUPERMARIO1) ;supermario it his initial state, he does not do anything
                                        (make-posn 100 100);update position  of the initial and final boxes respectively.
                                        (make-MB 1
-                                                (make-posn 100 100))
+                                                (make-posn 100 100)) 
                                        (make-MB 2
                                                 (make-posn 200 200))
                                        #false)
                            " ")
               (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
-                          (make-posn 200 20)
+                          (make-posn 150 45)
                           (make-MB 1 (make-posn 100 100)) 
                           (make-MB 2 (make-posn 200 200))
                           #false)) 
@@ -544,7 +544,7 @@
 
 ;4)
 (check-expect (w-keyaction ;use tests to check the coordinates of the boxes, the chars, and to see whether you fail or not.
-               (make-world (make-character 10 
+               (make-world (make-character 10  
                                            (make-posn 50 50) 0 SUPERMARIO1) ;supermario it his initial state, he does not do anything
                                        (make-posn 100 100) ;update position  of the initial and final boxes respectively.
                                        (make-MB 1
@@ -555,7 +555,7 @@
                         " "  ) ;-FIXED-without this argument, code is not going to compile (test is not going to pass).
                ; then update the coordinates of the supermario while he is ready to jump, but REMEMBER, THE BOX COORDINATES  MUST NOT CHANGE. They will be the same.            
               (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
-                          (make-posn 200 20)
+                          (make-posn 150 45)
                           (make-MB 1
                                         (make-posn 100 100)) ;posns of the start-end boxes respectively.
                           (make-MB 2
@@ -661,12 +661,12 @@
     [(= (character-state (world-char w)) -1) (place-image start 750 450 BG)] ;This is the scene shown to the user after having received the FAIL Screen before.
     ;thus this returns the image back to the starting state to give the game user the chance to attempt jumping the supermario again.
 
-    ;What happens if the game does not fail?
+    ;What happens if the game does not fail? 
     ;Then simply we must update the supermario positions, the in-between position of boxes, the counter, the number of points accumulated.
     [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 850
                        (place-image points 100 50
                                      (place-image
-                                     (character-frame (world-char w)) 
+                                     (character-frame (world-char w))  
                                                (posn-x (character-position (world-char w)))
                                                (posn-y (character-position (world-char w))) 
                                                (place-image (vector-ref boxes (MB-boxes-look (world-next-box w)))
@@ -679,7 +679,7 @@
 
 
 (check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
-                                      INITIAL-POSN 
+                                      INITIAL-POSN  
                                       (make-MB 0
                                                (make-posn 10 10))
                                       (make-MB 1
@@ -689,8 +689,8 @@
                            (place-image (text (string-append "Points: " "20") 30 "red") 100 50
                                         (place-image SUPERMARIO3 60 70
                                                      (place-image (vector-ref boxes 1) 20 20
-                                                                  (place-image (vector-ref boxes 0) 10 10 BG))))))
-
+                                                                  (place-image (vector-ref boxes 0) 10 10 BG)))))) 
+ 
  
  
 
@@ -841,7 +841,7 @@
 ;REST-SCENE-BOX is used here before its definition
 ;REST-SCENE-CHAR is used here before its definition
 ;RANDOM-BOX is used here before its definition
-;MAJOR TIME CONSUMING ISSUES WITH SLOW RACKET RUNNING, HAD TO KILL APP AND RESTART LIKE 20 TIMES
+;MAJOR TIME CONSUMING ISSUES WITH SLOW RACKET RUNNING, HAD TO KILL APP AND RESTART LIKE ALMOST EVERY 30 MINS TIMES
 
 
                 
