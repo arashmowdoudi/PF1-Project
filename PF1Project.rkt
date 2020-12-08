@@ -42,7 +42,7 @@
 ;Note to Teammates: height must be < width for better showing results.
 
 ;Code:
-(define BG-HEIGHT 999)
+(define BG-HEIGHT 999) 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -112,6 +112,7 @@
 (define 2-POINTS 2)
 (define 3-POINTS 3)
 (define 4-POINTS 4)
+
 
 ;Tests/Examples
 (check-random 1-POINT 1)
@@ -652,7 +653,7 @@
           ;template:
           ;(define (counter coun) (rectangle number "color"))
           ;Code:
-          (define (counter c) (rectangle c 80 "solid" "black"))
+          (define (counter c) (rectangle c 80 "solid" "red"))
           ] 
   (cond  ;what screen is shown to the real user after having failed to comply with the game requirements?
     ; A FAIL SCENE.
