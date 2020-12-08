@@ -33,7 +33,7 @@
 ;header/template (define BG-WIDTH ...) where ... will be an int number.
 
 ;Code:
-(define BG-WIDTH 1999) 
+(define BG-WIDTH 1999)  
 
 
 ;Interpretation: the background scene parameters of the game (in this case, height).
@@ -115,10 +115,10 @@
 
 
 ;Tests/Examples
-(check-random 1-POINT 1)
-(check-random 2-POINTS 2)
-(check-random 3-POINTS 3)
-(check-random 4-POINTS 4)
+(check-expect 1-POINT 1)
+(check-expect 2-POINTS 2)
+(check-expect 3-POINTS 3)
+(check-expect 4-POINTS 4)
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -142,7 +142,6 @@
 
 
 
-
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;Character Movement
@@ -152,15 +151,15 @@
 ;(define movex ....)
 ;Template (define MOVE-X + number)
 ;(define MOVE2-X + number)
-(define MOVE-X +100)
-(define smallx 10)
-
+(define MOVE-X +150)
+(define smallx 8)
+ 
 ;Y Axis
 ;Interpretation: The 2 kind of movements on the Y axis, 1 big and 1 small.
 ;Similar template to previous defs
 ;Code:
-(define MOVE-Y -80)
-(define smally -7)
+(define MOVE-Y -95)
+(define smally -5)
 
 
 
@@ -194,7 +193,7 @@
 ;SuperMario original position 
 ;Interpretation: the original position onto the box of SuperMario.
 ;Code:
-(define ORIGINAL-POSITION (make-posn 300 550))
+(define ORIGINAL-POSITION (make-posn 200 480))
 
 (define INITIAL-POSN ORIGINAL-POSITION)
 
@@ -213,12 +212,12 @@
 ; (define original-box (make-posn 100 100))
 
 ;Code:
-(define POS-ORIG-BOX (make-posn 250 750))
+(define POS-ORIG-BOX (make-posn 250 700))
 
-(check-random POS-ORIG-BOX (make-posn 250 750))
+(check-expect POS-ORIG-BOX (make-posn 250 700))
 
 
-
+ 
  
 
 
@@ -243,7 +242,7 @@
 ;(define FIN-BOX (make-posn ( .. (.. number number) number ) (... (... number number) number)))))
 
 ;Code:
-(define POS-NEXT-BOX (make-posn (+ (* 80 smallx) 500) (+ (* 80 smally) 1000)))
+(define POS-NEXT-BOX (make-posn 1500 650))
 
 
 
@@ -282,7 +281,7 @@
 (vector-set! boxes 2 (bitmap "images/sm-images/final-box.png"))
 
 
-
+ 
 
 
 
@@ -458,7 +457,7 @@
 ;Code
 (define (w-keyaction w key)
   (cond
-    [(and (key=? key " ") (not (= (character-state (world-char w)) 2))) ;what happens if we press w
+    [(and (key=? key " ") (not (= (character-state (world-char w)) 2))) ;what happens if we press space. Idea got from https://docs.racket-lang.org/teachpack/2htdpuniverse.html?q=space#%28form._world._%28%28lib._2htdp%2Funiverse..rkt%29._space%29%29
          (make-world
           (make-character (character-points (world-char w))
                                       (make-posn ;position of the char wrt the coordinates
@@ -488,7 +487,7 @@
     
  
 
-        
+         
 ;Tests/Examples
 
 ;1)
@@ -636,7 +635,7 @@
 ;Code:
 (define (scenery w)
   (local [
-          ; Given a string, return an image showing the points
+          ; Given a string, return an image showing the points 
           ; scenery: string -> image
           ;interpretation: an image showing the points.
           ;Header (define points (text (... "points" ( ... (..) "color"))
