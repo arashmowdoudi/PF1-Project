@@ -720,15 +720,15 @@
           (define (move-box b) (make-MB (MB-boxes-look b)
                                              (make-posn (- (posn-x (MB-position-of-boxes b)) smallx)
                                                         (- (posn-y (MB-position-of-boxes b)) smally))))]
-        ; Restore Igor to start position
+        ; Restore Char
   (cond 
-        ; Igor flying
+        ; Flying
         [(= (character-state (world-char w)) 2)  
          ; Check if Igor reaches the destination
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
              (move-char w) ; If not, keep doing it
-             (if (and ; Check if Igor landed on the box
+             (if (and ; Check if SM landed on the box
                    (< (posn-x (world-posn w))
                       (+ (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ; Going left
                    (> (posn-x (world-posn w))
