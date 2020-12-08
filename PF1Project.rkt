@@ -699,7 +699,7 @@
 
 
 ; World -> World
-; Giving a World, Based on the state of Igor, return the new World
+; Given a world, return a newly updated world
 (define (new-world w)
   (local [ 
           ; World -> World
@@ -720,24 +720,25 @@
           (define (move-box b) (make-MB (MB-boxes-look b)
                                              (make-posn (- (posn-x (MB-position-of-boxes b)) smallx)
                                                         (- (posn-y (MB-position-of-boxes b)) smally))))]
-        ; Restore Char
+  ;RESET THE SCENERY
   (cond 
-        ; Flying
+        ;; SUPERMARIO3
+    ;the error might be in the following line,  we must fix it [(= (character-state (world-char w)) 2)          
         [(= (character-state (world-char w)) 2)  
-         ; Check if Igor reaches the destination
+         ; Conditions, if char manages to arrive ending box.
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
              (move-char w) ; If not, keep doing it
              (if (and ; Check if SM landed on the box
                    (< (posn-x (world-posn w))
-                      (+ (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ; Going left
+                      (+ (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ;This moves the car to the left
                    (> (posn-x (world-posn w))
-                      (- (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ; Going right
+                      (- (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ; This moves the char to the right
                    (> (posn-y (world-posn w))
-                      (- (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)) ; Going up
+                      (- (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)) ; This moves the char up
                    (< (posn-y (world-posn w))
-                      (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT))); Going down
-                 (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w))) ; If it do
+                      (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT))); This moves the char down
+                 (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w))) ;;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
                                                               ORIGINAL-POSITION ; Restore to the initial position 
                                                               0
                                                               SUPERMARIO3)
@@ -757,7 +758,7 @@
 
  
 
-(check-expect (act (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO3) 
+(check-expect (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO3) 
                                (make-posn 160 50)
                                (make-MB 0 (make-posn 50 50))
                                (make-MB 2 (make-posn 100 100))
