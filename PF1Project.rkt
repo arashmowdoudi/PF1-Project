@@ -780,7 +780,7 @@
 ;Tests/Examples
 
 (check-expect (new-world (make-world
-                          (make-character 11
+                          (make-character 10
                                           (make-posn 80 50)
                                           -2
                                           SUPERMARIO3) 
