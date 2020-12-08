@@ -218,7 +218,7 @@
 
 
  
- 
+  
  
  
 
@@ -242,20 +242,12 @@
 ;(define FIN-BOX (make-posn ( .. (.. number number) number ) (... (... number number) number)))))
 
 ;Code:
-(define POS-NEXT-BOX (make-posn 1500 470))
-
-
-
-
-
+(define POS-NEXT-BOX (make-posn 1500 460))
 
 
 
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 
 
 
@@ -681,7 +673,7 @@
 (check-expect (scenery (make-world (make-character 20 (make-posn 250 700) 2 SUPERMARIO3)
                                       INITIAL-POSN 
                                       (make-MB 0 (make-posn 10 10))
-                                      (make-MB 1 (make-posn 20 20))  
+                                      (make-MB 1 (make-posn 20 20)) 
                                       #false))
               (place-image (rectangle 150 40 "solid" "red") 750 850
                            (place-image (text (string-append "Points: " "20") 36 "red") 100 50
