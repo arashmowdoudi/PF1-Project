@@ -151,15 +151,15 @@
 ;(define movex ....)
 ;Template (define MOVE-X + number)
 ;(define MOVE2-X + number)
-(define MOVE-X +150)
-(define smallx 8)
+(define MOVE-X +50)
+(define smallx 6)
  
 ;Y Axis
 ;Interpretation: The 2 kind of movements on the Y axis, 1 big and 1 small.
 ;Similar template to previous defs
 ;Code:
-(define MOVE-Y -95)
-(define smally -5)
+(define MOVE-Y -55)
+(define smally -8)
 
 
 
