@@ -19,7 +19,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ; source of colors information : https://htmlcolorcodes.com/
-; color of backgrouf with rgb
+; color of backgroud with rgb
 ; Interpretation: The color of the background
 ; Header: (define bg-color (make-color integer integer integer))
 ;Template: (define bg-color (make-color 221 211 28))
@@ -614,7 +614,7 @@
 
 
 
-
+ 
 
 
 
