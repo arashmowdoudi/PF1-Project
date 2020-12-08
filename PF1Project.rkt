@@ -219,7 +219,7 @@
 
  
  
-
+ 
  
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -642,7 +642,7 @@
           ;Template:
           ;(define points (text (string-append "points: " (number->string (character-points (world-char w)))) "color"))
           ;Code:
-          (define points (text (string-append "Points: " (number->string (character-points (world-char w)))) 30 "red"))
+          (define points (text (string-append "Points: " (number->string (character-points (world-char w)))) 36 "red"))
 
          
           ;Next we design a counter in bottom of the page which  shows how much power you are applying to the key, and if you fail the game with a certain amount of push given,
@@ -657,14 +657,14 @@
   (cond  ;what screen is shown to the real user after having failed to comply with the game requirements?
     ; A FAIL SCENE.
     ;this will compile after creating the end screen (comment TBD SOON)
-    [(not (false? (world-fail? w))) (place-image end 750 450 BG)]   ;teammates, please play with the image coordinates x and y and see which suit best.
-    [(= (character-state (world-char w)) -1) (place-image start 750 450 BG)] ;This is the scene shown to the user after having received the FAIL Screen before.
+    [(not (false? (world-fail? w))) (place-image end 600 400 BG)]   ;teammates, please play with the image coordinates x and y and see which suit best.
+    [(= (character-state (world-char w)) -1) (place-image start 600 400 BG)] ;This is the scene shown to the user after having received the FAIL Screen before.
     ;thus this returns the image back to the starting state to give the game user the chance to attempt jumping the supermario again.
 
     ;What happens if the game does not fail? 
     ;Then simply we must update the supermario positions, the in-between position of boxes, the counter, the number of points accumulated.
     [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 850
-                       (place-image points 100 50
+                       (place-image points 100 50 
                                      (place-image
                                      (character-frame (world-char w))  
                                                (posn-x (character-position (world-char w)))
@@ -678,25 +678,23 @@
                                                                 BG)))))])))
 
 
-(check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
-                                      INITIAL-POSN  
-                                      (make-MB 0
-                                               (make-posn 10 10))
-                                      (make-MB 1
-                                               (make-posn 20 20)) 
+(check-expect (scenery (make-world (make-character 20 (make-posn 250 700) 2 SUPERMARIO3)
+                                      INITIAL-POSN 
+                                      (make-MB 0 (make-posn 10 10))
+                                      (make-MB 1 (make-posn 20 20))  
                                       #false))
-              (place-image (rectangle 150 40 "solid" "red") 750 850 
-                           (place-image (text (string-append "Points: " "20") 30 "red") 100 50
-                                        (place-image SUPERMARIO3 60 70
-                                                     (place-image (vector-ref boxes 1) 20 20
-                                                                  (place-image (vector-ref boxes 0) 10 10 BG)))))) 
- 
- 
- 
+              (place-image (rectangle 150 40 "solid" "red") 750 850
+                           (place-image (text (string-append "Points: " "20") 36 "red") 100 50
+                                        (place-image SUPERMARIO3 200 480
+                                                     (place-image (vector-ref boxes 1) 250 700
+                                                                  (place-image (vector-ref boxes 0) 1500 470 BG))))))
+  
+  
+  
 
  
-
-
+ 
+ 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -724,7 +722,7 @@
                                                             SUPERMARIO3)  ; 4 parameters, posn, curr box, next box, boolean
                                             (world-posn w)
                                             (world-current-box w)
-                                            (world-next-box w)
+                                            (world-next-box w) 
                                             (world-fail? w)))
           ; a MB is one of:
           ; (make-MB (gamebox-boxes-look b)
@@ -763,7 +761,7 @@
                                               (make-MB (MB-boxes-look (world-next-box w)) POS-ORIG-BOX) ;Original box will be replaced with the final box.
                                               (make-MB (random 0 3) POS-NEXT-BOX) ;Create a random final box.
                                               (world-fail? w)))  ;Teammate: use a helper method to delay the program for a couple of seconds.
-                 (begin (sleep 5) (make-world (make-character 0  ;Begin is used for returning the last value of all the subexpressions given.
+                 (begin (sleep 1) (make-world (make-character 0  ;Begin is used for returning the last value of all the subexpressions given.
                                                               ORIGINAL-POSITION ;Move character back to original position. /// The helper method used is sleep
                                                               0
                                                               SUPERMARIO1) ;Reset Supermario to original relaxing state.
