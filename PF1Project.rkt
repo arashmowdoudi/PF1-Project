@@ -624,7 +624,7 @@
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
+ 
 
 
 
@@ -643,7 +643,7 @@
           ;Template:
           ;(define points (text (string-append "points: " (number->string (character-points (world-char w)))) "color"))
           ;Code:
-          (define points (text (string-append "points: " (number->string (character-points (world-char w)))) 50 "white"))
+          (define points (text (string-append "Points: " (number->string (character-points (world-char w)))) 30 "red"))
 
          
           ;Next we design a counter in bottom of the page which  shows how much power you are applying to the key, and if you fail the game with a certain amount of push given,
@@ -653,7 +653,7 @@
           ;template:
           ;(define (counter coun) (rectangle number "color"))
           ;Code:
-          (define (counter c) (rectangle c 80 "solid" "red"))
+          (define (counter c) (rectangle c 40 "solid" "red")) 
           ] 
   (cond  ;what screen is shown to the real user after having failed to comply with the game requirements?
     ; A FAIL SCENE.
