@@ -503,13 +503,13 @@
                                        #false)
                            " ")
               (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
-                          (make-posn 260 0)
+                          (make-posn 200 20)
                           (make-MB 1 (make-posn 100 100)) 
                           (make-MB 2 (make-posn 200 200))
                           #false)) 
 
 ;2)
-(check-expect (w-keyevent
+(check-expect (w-keyaction
                (make-world (make-character 10
                                            (make-posn 50 50) -1 SUPERMARIO1) ;supermario it his initial state, he does not do anything
                                        (make-posn 100 100) ;update position  of the initial and final boxes respectively.
@@ -544,8 +544,8 @@
                           #false))
 
 ;4)
-(check-expect (w-keyevent ;use tests to check the coordinates of the boxes, the chars, and to see whether you fail or not.
-               (make-world (make-character 10
+(check-expect (w-keyaction ;use tests to check the coordinates of the boxes, the chars, and to see whether you fail or not.
+               (make-world (make-character 10 
                                            (make-posn 50 50) 0 SUPERMARIO1) ;supermario it his initial state, he does not do anything
                                        (make-posn 100 100) ;update position  of the initial and final boxes respectively.
                                        (make-MB 1
@@ -556,7 +556,7 @@
                         " "  ) ;-FIXED-without this argument, code is not going to compile (test is not going to pass).
                ; then update the coordinates of the supermario while he is ready to jump, but REMEMBER, THE BOX COORDINATES  MUST NOT CHANGE. They will be the same.            
               (make-world (make-character 10 (make-posn 50 50) 1 SUPERMARIO2)
-                          (make-posn 300 200)
+                          (make-posn 200 20)
                           (make-MB 1
                                         (make-posn 100 100)) ;posns of the start-end boxes respectively.
                           (make-MB 2
@@ -667,7 +667,7 @@
     [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 850
                        (place-image points 100 50
                                      (place-image
-                                     (character-frame (world-char w))
+                                     (character-frame (world-char w)) 
                                                (posn-x (character-position (world-char w)))
                                                (posn-y (character-position (world-char w))) 
                                                (place-image (vector-ref boxes (MB-boxes-look (world-next-box w)))
@@ -680,29 +680,29 @@
 
 
 (check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
-                                      INITIAL-POSN
+                                      INITIAL-POSN 
                                       (make-MB 0
                                                (make-posn 10 10))
                                       (make-MB 1
-                                               (make-posn 20 20))
+                                               (make-posn 20 20)) 
                                       #false))
-              (place-image (rectangle 150 50 "solid" "white") 750 850
-                           (place-image (text (string-append "Points: " "20") 36 "white") 100 50
+              (place-image (rectangle 150 40 "solid" "red") 750 850 
+                           (place-image (text (string-append "Points: " "20") 30 "red") 100 50
                                         (place-image SUPERMARIO3 60 70
                                                      (place-image (vector-ref boxes 1) 20 20
                                                                   (place-image (vector-ref boxes 0) 10 10 BG))))))
 
+ 
+ 
 
-
-
-
+ 
 
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
-
+ 
 
 
 
@@ -780,15 +780,15 @@
 ;Tests/Examples
 
 (check-expect (new-world (make-world
-                          (make-character 10
+                          (make-character 11
                                           (make-posn 80 50)
-                                          2
+                                          -2
                                           SUPERMARIO3) 
                                (make-posn 160 50)
-                               (make-MB 0 
-                                        (make-posn 50 50))
+                               (make-MB 2 
+                                        (make-posn 250 750))
                                (make-MB 2
-                                        (make-posn 100 100))
+                                        (make-posn 1100 140))
                                #false))
               (make-world (make-character 11 ORIGINAL-POSITION 0 SUPERMARIO1)
                                               INITIAL-POSN 
@@ -798,7 +798,7 @@
 
  
 
-
+ 
 
 
 
