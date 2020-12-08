@@ -702,9 +702,9 @@
 ; Given a world, return a newly updated world
 (define (new-world w)
   (local [ 
-          ; World -> World
-          ; Giving a world in which the character has not reached the destination ig the spot of the posn
-          ; Add the small amount of the increment to reach that
+          ;Given a world, return a newly updated world.
+          ;move-char: World-> World
+          ;Interpretation: the newly updated world incremented.
           (define (move-char w) (make-world (make-character (character-points (world-char w))
                                                             (make-posn
                                                              (+ smallx (posn-x (character-position (world-char w))))
@@ -715,8 +715,14 @@
                                             (world-current-box w)
                                             (world-next-box w)
                                             (world-fail? w)))
-          ; MB -> MB
-          ; Giving the next MB after Igor has landed on it, make the transition animation for it when it becames the current box
+          ; a MB is one of:
+          ; (make-MB (gamebox-boxes-look b)
+          ; where gamebox--boxes-look shows the box we're in right now.
+          ; b the position-of-boxes
+          ; Given an MB, return the newly updated MB with the character on it.
+          ; Interpretation: newly updated MB with char on top of it.
+          ; header (define (MB g) (.... (.. ..) (make-posn (........) ......).....)
+          ;Template: (define (move-box b) (make-MB (MB-boxes-look b)
           (define (move-box b) (make-MB (MB-boxes-look b)
                                              (make-posn (- (posn-x (MB-position-of-boxes b)) smallx)
                                                         (- (posn-y (MB-position-of-boxes b)) smally))))]
@@ -728,7 +734,7 @@
          ; Conditions, if char manages to arrive ending box.
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
                   (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
-             (move-char w) ; If not, keep doing it
+             (move-char w) ; If not, keep doing it 
              (if (and ; Check if SM landed on the box
                    (< (posn-x (world-posn w))
                       (+ (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ;This moves the car to the left
@@ -739,21 +745,21 @@
                    (< (posn-y (world-posn w))
                       (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT))); This moves the char down
                  (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w))) ;;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
-                                                              ORIGINAL-POSITION ; Restore to the initial position 
+                                                              ORIGINAL-POSITION ; RESET TO ORIGINAL POSN
                                                               0
                                                               SUPERMARIO3)
-                                              INITIAL-POSN ; Restoring the position
+                                              INITIAL-POSN ;RESET TO ORIGINAL POSN
                                               (make-MB (MB-boxes-look (world-next-box w)) POS-ORIG-BOX) ; Current box get the appearance of the new box
                                               (make-MB (random 0 3) POS-NEXT-BOX) ; New next box
                                               (world-fail? w)))
-                 (begin (sleep 1) (make-world (make-character 0 ; If it do not
-                                                              ORIGINAL-POSITION ; Restore to the initial position
+                 (begin (sleep 1) (make-world (make-character 0 ;UNLESS
+                                                              ORIGINAL-POSITION ;RESET TO ORIGINAL POSN
                                                               0
                                                               SUPERMARIO1)
                                               INITIAL-POSN
                                               (world-current-box w)
                                               (world-next-box w)
-                                              #true))))] 
+                                              #true))))]   ;Q: is there any difference between writing #t and #true?
         [else w])))
 
  
