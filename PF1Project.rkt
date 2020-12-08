@@ -439,14 +439,6 @@
 
 
 
-
-
-
-
-
-
-
-
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -468,23 +460,26 @@
     [(and (key=? key " ") (not (= (character-state (world-char w)) 2))) ;what happens if we press w
          (make-world
           (make-character (character-points (world-char w))
-                                      (make-posn ;position of the char.
+                                      (make-posn ;position of the char wrt the coordinates
                                       (posn-x (character-position (world-char w)))
-                                      (posn-y (character-position (world-char w)))) 1 SUPERMARIO2)                             
+                                      (posn-y (character-position (world-char w))))
+                                      1 ;Character at state 1, getting ready to jump
+                                      SUPERMARIO2) ; he will be at version 2 of supermario, which is when he is getting ready to jump.                            
                       (make-posn
-                      (+ MOVE-X (posn-x (world-posn w)))   ;posn of the char
+                      (+ MOVE-X (posn-x (world-posn w)))   ;Update coordinates of the starting and ending boxes.
                       (+ MOVE-Y (posn-y (world-posn w))))
-                     
-                     (world-current-box w) ;current box and next box.
+                     ;
+                     (world-current-box w)  
                      (world-next-box w)
                      (world-fail? w))] ;no fail.
     [(or (key=? key "\r") (= (character-state (world-char w)) -1) (not (false? (world-fail? w))))
          (make-world (make-character (character-points (world-char w))
-                                     (make-posn (posn-x (character-position (world-char w)))
-                                                (posn-y (character-position (world-char w))))
-                                     0
-                                     SUPERMARIO1)
-                     ORIGINAL-POSITION
+                                     (make-posn ;position of the char wrt the coordinates
+                                      (posn-x (character-position (world-char w)))
+                                      (posn-y (character-position (world-char w))))
+                                     0 ;Character at state 0, doing nothing
+                                     SUPERMARIO1) ; he will be at version 1 of supermario, which is when he is relaxing.
+                     ORIGINAL-POSITION  ;return to starting box.
                      (world-current-box w)
                      (world-next-box w)
                      #false)] 
@@ -494,6 +489,7 @@
 
         
 ;Tests/Examples
+
 ;1)
 (check-expect (w-keyaction
                (make-world (make-character 10
@@ -526,7 +522,7 @@
               (make-world (make-character 10
                                           (make-posn 50 50) 0 SUPERMARIO1) ;initial mario state
                           ORIGINAL-POSITION
-                          (make-MB 1
+                          (make-MB 1 
                                         (make-posn 100 100)) ;posns of the start-end boxes respectively.
                           (make-MB 2
                                         (make-posn 200 200)) ;posns of the start-end boxes respectively. 
@@ -583,21 +579,24 @@
 ;Header: (define (afterw ... ....)
 ;Template:
 ;(define (afterw keypressed  key) (cond .. (key =? ... (make-wolrd (make-char ...... ).... )... (make-posn (posn-x..... (posn y)))))
-
 ;Code:
-(define (after-w w key)
+(define (after-w w key) 
   (cond [(key=? key " ") (make-world (make-character (character-points (world-char w))
                                                      (make-posn (posn-x (character-position (world-char w)))
-                                                                (posn-y (character-position (world-char w))))
-                                                     2
-                                                     SUPERMARIO3)
-                                     (world-posn w)
+                                                                (posn-y (character-position (world-char w)))) ;coordinates of the supermario will be updated after having pressed the w key.
+                                                     2  ;the state also will change
+                                                     SUPERMARIO3)  ; and we will use the 3rd version of supermario (Jumping)
+                                     (world-posn w) 
                                      (world-current-box w)
                                      (world-next-box w)
                                      (world-fail? w))]
         [else w]))
 
-(check-expect (release.key (make-world (make-character 50 (make-posn 40 40) 1 SUPERMARIO2)
+
+
+;Tests/Examples
+
+(check-expect (after-w (make-world (make-character 50 (make-posn 40 40) 1 SUPERMARIO2)
                                        (make-posn 200 200)
                                        (make-MB 1 (make-posn 100 100))
                                        (make-MB 2 (make-posn 200 200))
@@ -629,39 +628,47 @@
 
 
 
-;Please write design recipe.
-
+;Given some parameters like points, etc, return the overall scenery of the game.
 ;Interpretation: Scenery of our game after pressing w.
+;Header (define (scenery w) (local [ ...]]]
+;Template (define (scenery w  (local [ (Define points ...) (define counter ...))
+;Code:
 (define (scenery w)
   (local [
           ; Given a string, return an image showing the points
           ; scenery: string -> image
           ;interpretation: an image showing the points.
+          ;Header (define points (text (... "points" ( ... (..) "color"))
+          ;Template:
+          ;(define points (text (string-append "points: " (number->string (character-points (world-char w)))) "color"))
+          ;Code:
           (define points (text (string-append "points: " (number->string (character-points (world-char w)))) 50 "white"))
 
          
-          ;counter in bottom of the page which  shows how much you are pressing the key, and if you fail the game with a certain amount of push given,
+          ;Next we design a counter in bottom of the page which  shows how much power you are applying to the key, and if you fail the game with a certain amount of push given,
           ;depending on if the attempt was low or more than it should, you see the counter all the times you attempt jumping, and act accordingly (use more or less power).
-          ;header (define (counter .. (shapetobeused number color))
+          ;AKA use the counter push button (w) accordingly to the move needs of the supermario.
+          ;header (define (counter .. (shapetobeused - rectangle number color))
           ;template:
-          ;(Define (counter coun) (rectangle number "color"))
+          ;(define (counter coun) (rectangle number "color"))
           ;Code:
           (define (counter c) (rectangle c 80 "solid" "black"))
           ] 
-  (cond
-    ; FAIL
-    ;this will compile after creating the end screen
-    [(not (false? (world-fail? w))) (place-image end 750 450 BG)]
-    ;scene shown to user after having failed
-    [(= (character-state (world-char w)) -1) (place-image start 750 450 BG)]
-    ;supermario movement
-    
+  (cond  ;what screen is shown to the real user after having failed to comply with the game requirements?
+    ; A FAIL SCENE.
+    ;this will compile after creating the end screen (comment TBD SOON)
+    [(not (false? (world-fail? w))) (place-image end 750 450 BG)]   ;teammates, please play with the image coordinates x and y and see which suit best.
+    [(= (character-state (world-char w)) -1) (place-image start 750 450 BG)] ;This is the scene shown to the user after having received the FAIL Screen before.
+    ;thus this returns the image back to the starting state to give the game user the chance to attempt jumping the supermario again.
+
+    ;What happens if the game does not fail?
+    ;Then simply we must update the supermario positions, the in-between position of boxes, the counter, the number of points accumulated.
     [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 850
                        (place-image points 100 50
                                      (place-image
                                      (character-frame (world-char w))
                                                (posn-x (character-position (world-char w)))
-                                               (posn-y (character-position (world-char w)))
+                                               (posn-y (character-position (world-char w))) 
                                                (place-image (vector-ref boxes (MB-boxes-look (world-next-box w)))
                                                         (posn-x (MB-position-of-boxes (world-next-box w)))
                                                         (posn-y (MB-position-of-boxes (world-next-box w)))
@@ -698,19 +705,23 @@
 
 
 
-; World -> World
-; Given a world, return a newly updated world
-(define (new-world w)
-  (local [ 
+; new-world: World -> World
+; New-world takes a current world, and returns a newly updated world after some events have occured on it.
+; Header (define (new-world w) (... [ ....]...
+; Template (define (new-world w (local [ (define (move-char w) (make-world ......] ..... ))
+; Interpretation: the definition of the newly updated world
+;Code:
+(define (new-world w)  ;Hint: Teammates: Use (local [  and define the move char function inside it with the newly incremented world inside it. Also increment points on it,  fix parameters and define the state of supermario.
+  (local [  ;Local will help us evaluate ALL of the following definitions in order, heading next to he body of the functions.
           ;Given a world, return a newly updated world.
           ;move-char: World-> World
           ;Interpretation: the newly updated world incremented.
           (define (move-char w) (make-world (make-character (character-points (world-char w))
-                                                            (make-posn
+                                                            (make-posn ;update posn of characters wrt the x,y coordinates.
                                                              (+ smallx (posn-x (character-position (world-char w))))
                                                              (+ smally (posn-y (character-position (world-char w)))))
                                                             2
-                                                            SUPERMARIO3) 
+                                                            SUPERMARIO3)  ; 4 parameters, posn, curr box, next box, boolean
                                             (world-posn w)
                                             (world-current-box w)
                                             (world-next-box w)
@@ -718,13 +729,13 @@
           ; a MB is one of:
           ; (make-MB (gamebox-boxes-look b)
           ; where gamebox--boxes-look shows the box we're in right now.
-          ; b the position-of-boxes
+          ; b the position-of-boxes 
           ; Given an MB, return the newly updated MB with the character on it.
           ; Interpretation: newly updated MB with char on top of it.
           ; header (define (MB g) (.... (.. ..) (make-posn (........) ......).....)
           ;Template: (define (move-box b) (make-MB (MB-boxes-look b)
           (define (move-box b) (make-MB (MB-boxes-look b)
-                                             (make-posn (- (posn-x (MB-position-of-boxes b)) smallx)
+                                             (make-posn (- (posn-x (MB-position-of-boxes b)) smallx)  ;Insert position of boxes taking into consideration the x and y coordinates.
                                                         (- (posn-y (MB-position-of-boxes b)) smally))))]
   ;RESET THE SCENERY
   (cond 
@@ -733,41 +744,50 @@
         [(= (character-state (world-char w)) 2)  
          ; Conditions, if char manages to arrive ending box.
          (if (and (< (posn-x (character-position (world-char w))) (posn-x (world-posn w)))
-                  (> (posn-y (character-position (world-char w))) (posn-y (world-posn w))))
-             (move-char w) ; If not, keep doing it 
-             (if (and ; Check if SM landed on the box
-                   (< (posn-x (world-posn w))
-                      (+ (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ;This moves the car to the left
-                   (> (posn-x (world-posn w))
-                      (- (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) ; This moves the char to the right
-                   (> (posn-y (world-posn w))
-                      (- (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)) ; This moves the char up
-                   (< (posn-y (world-posn w))
-                      (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT))); This moves the char down
+                  (> (posn-y (character-position (world-char w))) (posn-y (world-posn w)))) ;Characted did not manage to arrive to the ending box,
+             (move-char w) ;The following line checks whether the character reaches the ending state
+             (if (and 
+                   (< (posn-x (world-posn w)) ;next line moves the car to the left
+                      (+ (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH))
+                   (> (posn-x (world-posn w)) ;Next Line moves the char to the right
+                      (- (posn-x (MB-position-of-boxes (world-next-box w))) BOX-WIDTH)) 
+                   (> (posn-y (world-posn w)) ;Next Line moves the char upwards
+                      (- (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)) 
+                   (< (posn-y (world-posn w)) ;Next Line moves the char downwards
+                      (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)))
                  (begin (sleep 1) (make-world (make-character (add1 (character-points (world-char w))) ;;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
-                                                              ORIGINAL-POSITION ; RESET TO ORIGINAL POSN
+                                                              ORIGINAL-POSITION ;Move character back to original position
+                                                              0         ;Character at state 0.
+                                                              SUPERMARIO3) ;Character jumping.
+                                              INITIAL-POSN ;Move boxes back to their  initial position
+                                              (make-MB (MB-boxes-look (world-next-box w)) POS-ORIG-BOX) ;Original box will be replaced with the final box.
+                                              (make-MB (random 0 3) POS-NEXT-BOX) ;Create a random final box.
+                                              (world-fail? w)))  ;Teammate: use a helper method to delay the program for a couple of seconds.
+                 (begin (sleep 5) (make-world (make-character 0  ;Begin is used for returning the last value of all the subexpressions given.
+                                                              ORIGINAL-POSITION ;Move character back to original position. /// The helper method used is sleep
                                                               0
-                                                              SUPERMARIO3)
-                                              INITIAL-POSN ;RESET TO ORIGINAL POSN
-                                              (make-MB (MB-boxes-look (world-next-box w)) POS-ORIG-BOX) ; Current box get the appearance of the new box
-                                              (make-MB (random 0 3) POS-NEXT-BOX) ; New next box
-                                              (world-fail? w)))
-                 (begin (sleep 1) (make-world (make-character 0 ;UNLESS
-                                                              ORIGINAL-POSITION ;RESET TO ORIGINAL POSN
-                                                              0
-                                                              SUPERMARIO1)
-                                              INITIAL-POSN
-                                              (world-current-box w)
+                                                              SUPERMARIO1) ;Reset Supermario to original relaxing state.
+                                              INITIAL-POSN     ;Move boxes back to their initial positions
+                                              (world-current-box w) ;4 params -> satisfied.
                                               (world-next-box w)
-                                              #true))))]   ;Q: is there any difference between writing #t and #true?
+                                              #true))))]   ;Q: is there any difference between writing #t and #true? 
         [else w])))
 
  
 
-(check-expect (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO3) 
+
+;Tests/Examples
+
+(check-expect (new-world (make-world
+                          (make-character 10
+                                          (make-posn 80 50)
+                                          2
+                                          SUPERMARIO3) 
                                (make-posn 160 50)
-                               (make-MB 0 (make-posn 50 50))
-                               (make-MB 2 (make-posn 100 100))
+                               (make-MB 0 
+                                        (make-posn 50 50))
+                               (make-MB 2
+                                        (make-posn 100 100))
                                #false))
               (make-world (make-character 11 ORIGINAL-POSITION 0 SUPERMARIO1)
                                               INITIAL-POSN 
@@ -786,7 +806,7 @@
 
 
 
-
+ 
 
 
 
@@ -794,6 +814,8 @@
 
 ; Nothing -> World
 ; Run the game with an initial world
+;Add the  5 parameters required for the world function
+; original-world, scenery, after-w, w-keyaction, new-world
 (define (main )
   (big-bang ORIGINAL-WORLD
     [to-draw scenery]
