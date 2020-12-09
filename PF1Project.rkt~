@@ -803,8 +803,7 @@
 ; Run the game with an initial world
 ;Add the  5 parameters required for the world function
 ; original-world, scenery, after-w, w-keyaction, new-world
-(define (main _)
-  (big-bang ORIGINAL-WORLD
+(define (main _)  (big-bang ORIGINAL-WORLD
     [to-draw scenery]
     [on-key w-keyaction]
     [on-release after-w] 
