@@ -250,7 +250,7 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-
+ 
 
 
 ;Starting and ending objects.
@@ -275,10 +275,7 @@
 
  
 
- 
 
-
- 
 
 
 
@@ -556,7 +553,7 @@
 
 
 
-
+  
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -605,7 +602,7 @@
 
 
 
- 
+       
 
 
 
@@ -656,7 +653,7 @@
     ;What happens if the game does not fail? 
     ;Then simply we must update the supermario positions, the in-between position of boxes, the counter, the number of points accumulated.
     [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 850
-                       (place-image points 100 50 
+                       (place-image points 100 150 
                                      (place-image
                                      (character-frame (world-char w))  
                                                (posn-x (character-position (world-char w)))
@@ -675,17 +672,17 @@
                                       (make-MB 0 (make-posn 10 10))
                                       (make-MB 1 (make-posn 20 20)) 
                                       #false))
-              (place-image (rectangle 150 40 "solid" "red") 750 850
+              (place-image (rectangle 150 50 "solid" "red") 750 850
                            (place-image (text (string-append "Points: " "20") 36 "red") 100 50
-                                        (place-image SUPERMARIO3 200 480
-                                                     (place-image (vector-ref boxes 1) 250 700
-                                                                  (place-image (vector-ref boxes 0) 1500 470 BG))))))
+                                        (place-image SUPERMARIO3 60 70
+                                                     (place-image (vector-ref boxes 1) 20 20
+                                                                  (place-image (vector-ref boxes 0) 10 10 BG))))))
   
-  
+    
   
 
- 
- 
+
+   
  
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -715,7 +712,7 @@
                                             (world-posn w)
                                             (world-current-box w)
                                             (world-next-box w) 
-                                            (world-fail? w)))
+                                            (world-fail? w))) 
           ; a MB is one of:
           ; (make-MB (gamebox-boxes-look b)
           ; where gamebox--boxes-look shows the box we're in right now.
@@ -764,29 +761,29 @@
         [else w])))
 
  
-
+   
 
 ;Tests/Examples
+
+
+
 
 (check-expect (new-world (make-world
                           (make-character 10
                                           (make-posn 80 50)
-                                          -2
+                                          2
                                           SUPERMARIO3) 
                                (make-posn 160 50)
-                               (make-MB 2 
+                               (make-MB 0 
                                         (make-posn 250 750))
                                (make-MB 2
-                                        (make-posn 1100 140))
+                                        (make-posn 1500 460))
                                #false))
               (make-world (make-character 11 ORIGINAL-POSITION 0 SUPERMARIO1)
                                               INITIAL-POSN 
                                               (make-MB 2 POS-ORIG-BOX)
                                               (make-MB (random 0 3) POS-NEXT-BOX)
                                               #false))
-
- 
-
  
 
 
@@ -806,14 +803,13 @@
 ; Run the game with an initial world
 ;Add the  5 parameters required for the world function
 ; original-world, scenery, after-w, w-keyaction, new-world
-(define (main )
-  (big-bang ORIGINAL-WORLD
+(define (main _)  (big-bang ORIGINAL-WORLD
     [to-draw scenery]
     [on-key w-keyaction]
     [on-release after-w] 
     [on-tick new-world]))
 
-(main )
+(main 0)
 
 
 
