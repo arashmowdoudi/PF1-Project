@@ -778,7 +778,7 @@
                    (> (posn-y (world-posn w)) ;Next Line moves the char upwards
                       (- (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)) 
                    (< (posn-y (world-posn w)) ;Next Line moves the char downwards
-                      (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)))
+                      (+ (posn-y (MB-position-of-boxes (world-next-box w))) BOX-HEIGHT)))    ;Teammate: use sleep function, if you dont know what that is, it is used to delay the program some seconds!
                  (begin (sleep 2) (make-world (make-character (add1 (character-points (world-char w))) ;;https://docs.racket-lang.org/htdp-langs/advanced.html?q=sleep#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._sleep%29%29 |||||https://docs.racket-lang.org/htdp-langs/advanced.html?q=begin#%28form._%28%28lib._lang%2Fhtdp-advanced..rkt%29._begin%29%29
                                                               ORIGINAL-POSITION ;Move character back to original position
                                                               0         ;Character at state 0.
