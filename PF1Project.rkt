@@ -449,16 +449,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -800,7 +790,7 @@
  ;Q: is there any difference between writing #t and #true? 
      
 
-;Tests/Examples
+;Tests/Examples 
  
 
 (check-expect (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO3) ;put character at this position and at state 2 (flying). ;supermario3 = state 2 (supermario flying)
