@@ -207,14 +207,18 @@
 
 
 ;Tests/Examples
-;(check-random ORIGINAL-POS (make-posn 300 550))
+(check-random ORIGINAL-POSITION (make-posn 300 550))
 
 ;SuperMario original position 
 ;Interpretation: the original position onto the box of SuperMario.
 ;Code:
 (define ORIGINAL-POSITION (make-posn 300 550))
 
+
+
 (define INITIAL-POSN ORIGINAL-POSITION)
+
+
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -233,6 +237,11 @@
 ;Code:
 (define POS-ORIG-BOX (make-posn 250 750))
 
+
+
+;Tests/Examples
+
+;Teammates: FYI: check-random checks whether the first expression evaluates to the same value as its expected one.
 (check-random POS-ORIG-BOX (make-posn 250 750))
 
 
@@ -577,7 +586,7 @@
 
 
 
-
+ 
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -691,6 +700,8 @@
                                                                (posn-y (MB-position-of-boxes (world-current-box w)))
                                                                 BG)))))])))
 
+
+;Comments to be written soon
 
 (check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
                                       INITIAL-POSN
