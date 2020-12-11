@@ -29,12 +29,14 @@
 
 
 
+
+
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;Import the required libraries for starting the program.
 (require 2htdp/image)
 (require 2htdp/universe)
 
-
+ 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; BG-COLOR is a struct
 ; BG-COLOR is a
@@ -42,7 +44,7 @@
 ; where one number is the a coordinate out of 3 for the HTML color codes.
 ; source of colors information : https://htmlcolorcodes.com/
 ; color of backgroud with rgb
-; Interpretation: it represent background color
+; Interpretation: The color of the background
 ; Header: (define bg-color (make-color integer integer integer))
 ; Template: (define bg-color (make-color 221 211 28))
 
@@ -50,11 +52,17 @@
 (define BG-COLOR (make-color 255 255 255))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-;width of background in the game and must be NO more than 2000 px.
+;Width and Height parameters must be NO more than 2000 px.
+;width of background in the game.
+;Interpretation: the background scene parameters of the game (in this case, width)
+;header/template (define BG-WIDTH ...) where ... will be an int number.
 
 ;Code:
 (define BG-WIDTH 1999)  
 
+
+;Interpretation: the background scene parameters of the game (in this case, height).
+;header/template (define BG-HEIGHT ...) where ... will be an int number.
 ;HEIGHT of background in the game.
 ;Note to Teammates: height must be < width for better showing results.
 
@@ -62,15 +70,18 @@
 (define BG-HEIGHT 999)  
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+; it represent background of game.
+; Draw the background scene of the game.
 ; A background is one of:
 ; empty-scene where creates an empty scene (a white rectangle with a black outline.)
-; BG-Width  is Number
-; BG-Height is Number
+; BG-Width Which is the width of the background
+; BG-Height Which is the height of the background.
 ; BG-Color which will be the color of the background.
 ; Interpretation: the background of our scenery.
 ; Header: (define BG (... ... ... ...))
 ; Template
-; (define BG (empty-scene BG-width BG-Height BG-COLOUR))
+; (define BG (empty-scene BG-width Bg0Height BG-COLOUR))
 
 ;Code:
 (define BG (empty-scene BG-WIDTH BG-HEIGHT BG-COLOR))
@@ -121,8 +132,11 @@
 ; the difficulty increases with every level passed aka the distance between the starting and
 ; the ending position increases so you should adjust the key-event in that way so that you 
 ; do not go out of bounds. For each level passed, the user collects +1 points to the accumulator.
-
 ; Interpretations: The number of points per each successful attempt.
+; Header: (define P1 1) (define P2 2)
+; Template:
+; (define 1-Point 1)
+; (define 2-points 2)
 
 ;Code:
 (define 1-POINT 1)
@@ -883,7 +897,7 @@
 
 
 ;Errors that made our life hard:
-;To be constantly updated:
+;To be constantly updated:;
 ;REST-SCENE-BOX is used here before its definition
 ;REST-SCENE-CHAR is used here before its definition
 ;RANDOM-BOX is used here before its definition
