@@ -5,18 +5,21 @@
 ;; about the language level of this file in a form that our tools can easily process.
 ; #reader(lib "htdp-advanced-reader.ss" "lang")((modname test) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
 ; PROGRAMMING FUNDAMENTALS 1
+
 ; GROUP PROJECT
+
+; MEMBERS:
+
 ; KELVIN LIKOLLARI
 ; ARASH MOWDOUDI
 ; KIERAN MCKEE 
-; MEMBERS
 
 ;PS1: Numbers in all definitions are subject to change!
 
 
 
 
-
+ 
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;Total Code & Help contibuted by each member.
@@ -347,7 +350,6 @@
 (vector-set! boxes 0 (bitmap "images/sm-images/starting-box.png"))
 (vector-set! boxes 1 (bitmap "images/sm-images/final-box.png"))
 (vector-set! boxes 2 (bitmap "images/sm-images/box3.png"))
-(vector-set! boxes 3 (bitmap "images/sm-images/box4.png"))
 
 
 
@@ -445,7 +447,7 @@
 ;Template
 ;(define rest-scene-box (make-gamebox (random number number) POS-ORIG-BOX))
 ;Code
-(define REST-SCENE-BOX (make-MB (random 0 4) POS-ORIG-BOX))
+(define REST-SCENE-BOX (make-MB (random 0 3) POS-ORIG-BOX))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -479,7 +481,7 @@
 ;(define random-box (make-gamebox (random number number) final-box))
 
 ;Code:
-(define RANDOM-BOX (make-MB (random 0 4) POS-NEXT-BOX))
+(define RANDOM-BOX (make-MB (random 0 3) POS-NEXT-BOX))
 
 
 
@@ -719,7 +721,7 @@
           ;depending on if the attempt was low or more than it should, you see the counter all the times you attempt jumping, and act accordingly (use more or less power).
           ;AKA use the counter push button (w) accordingly to the move needs of the supermario.
           ;header (define (counter .. (shapetobeused - rectangle number color))
-          ;template:
+          ;template: 
           ;(define (counter coun) (rectangle number "color"))
           ;Code:
           (define (counter c) (rectangle c 40 "solid" "red"))            ]  
@@ -734,33 +736,33 @@
     ;What happens if the game does not fail? 
     ;Then simply we must update the supermario positions, the in-between position of boxes, the counter, the number of points accumulated.
     [else (place-image (counter (/ (posn-x (world-posn w)) 2)) (/ BG-WIDTH 2) 900  ; put the counter image in those coordinates.
-                       (place-image points 150 150
+                       (place-image points 150 150  ;place pointer counter on this position
                                      (place-image
-                                     (character-frame (world-char w))  
+                                     (character-frame (world-char w))  ;place the frame of the character at coordinates x and y respectively.
                                                (posn-x (character-position (world-char w)))
                                                (posn-y (character-position (world-char w))) 
-                                               (place-image (vector-ref boxes (MB-boxes-look (world-next-box w)))
-                                                        (posn-x (MB-position-of-boxes (world-next-box w)))
+                                               (place-image (vector-ref boxes (MB-boxes-look (world-next-box w))) ;get boxes coordinates.
+                                                        (posn-x (MB-position-of-boxes (world-next-box w)))  ;Vector-ref is used for taking some element out of some list.
                                                         (posn-y (MB-position-of-boxes (world-next-box w)))
-                                                        (place-image (vector-ref boxes (MB-boxes-look (world-current-box w)))
+                                                        (place-image (vector-ref boxes (MB-boxes-look (world-current-box w))) ;put the image of the boxes wrt the coordinates x and y.
                                                                 (posn-x (MB-position-of-boxes (world-current-box w)))
                                                                (posn-y (MB-position-of-boxes (world-current-box w)))
-                                                                BG)))))])))
-
+                                                                BG)))))]))) ;background.
+ 
 
 ;Comments to be written soon
 
-(check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
+(check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3) ;put SuperMario at some position while in flying state 2 - SUPERMARIO3
                                       INITIAL-POSN
-                                      (make-MB 0
+                                      (make-MB 0     ;place marioboxes on those coords.
                                                (make-posn 10 10))
                                       (make-MB 1
                                                (make-posn 20 20))
-                                      #false))
-              (place-image (rectangle 150 50 "solid" "red") 750 850
-                           (place-image (text (string-append "Points: " "20") 36 "red") 100 50
-                                        (place-image SUPERMARIO3 60 70
-                                                     (place-image (vector-ref boxes 1) 20 20
+                                      #false)) ;not failed yet.
+              (place-image (rectangle 150 50 "solid" "red") 750 850 ;put the counter image red colored on coordinates 750 850.
+                           (place-image (text (string-append "Points: " "20") 36 "red") 150 50 ;while points on 150 50
+                                        (place-image SUPERMARIO3 60 70 ; SM AT THIS POS.
+                                                     (place-image (vector-ref boxes 1) 20 20 ;put respective boxes on those coords.
                                                                   (place-image (vector-ref boxes 0) 10 10 BG))))))
 
 
@@ -833,7 +835,7 @@
                                                               SUPERMARIO3) ;Character jumping.
                                               INITIAL-POSN ;Move boxes back to their  initial position
                                               (make-MB (MB-boxes-look (world-next-box w)) POS-ORIG-BOX) ;Original box will be replaced with the final box.
-                                              (make-MB (random 0 3) POS-NEXT-BOX) ;Create a random final box.
+                                              (make-MB (random 0 4) POS-NEXT-BOX) ;Create a random final box.
                                               (world-fail? w)))  ;Teammate: use a helper method to delay the program for a couple of seconds.
                  (begin (sleep 2) (make-world (make-character 0  ;Begin is used for returning the last value of all the subexpressions given.
                                                               ORIGINAL-POSITION ;Move character back to original position. /// The helper method used is sleep
@@ -849,7 +851,7 @@
      
 
 ;Tests/Examples 
- 
+  
 
 (check-expect (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO3) ;put character at this position and at state 2 (flying). ;supermario3 = state 2 (supermario flying)
                                (make-posn 160 50) ;at posn 160 50
@@ -859,7 +861,7 @@
               (make-world (make-character 11 ORIGINAL-POSITION 0 SUPERMARIO1) ;supermario at state 0 = supermario1 = when he is relaxing.
                                               INITIAL-POSN  ;go to original pos
                                               (make-MB 2 POS-ORIG-BOX)
-                                              (make-MB (random 0 3) POS-NEXT-BOX) ;after having passed the first, show any of the 3 boxes at random.
+                                              (make-MB (random 0 4) POS-NEXT-BOX) ;after having passed the first, show any of the 3 boxes at random.
                                               #false)) ;not failed the game yet!
                                               
 
@@ -898,7 +900,8 @@
 ;REST-SCENE-BOX is used here before its definition
 ;REST-SCENE-CHAR is used here before its definition
 ;RANDOM-BOX is used here before its definition
-;MAJOR TIME CONSUMING ISSUES WITH SLOW RACKET RUNNING, HAD TO KILL APP AND RESTART LIKE 20 TIMES
+;MAJOR TIME CONSUMING ISSUES WITH SLOW RACKET RUNNING, HAD TO KILL APP AND RESTART LIKE 20 TIMES.
+;
 
 
                 
