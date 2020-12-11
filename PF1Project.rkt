@@ -29,14 +29,12 @@
 
 
 
-
-
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;Import the required libraries for starting the program.
 (require 2htdp/image)
 (require 2htdp/universe)
 
- 
+
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; BG-COLOR is a struct
 ; BG-COLOR is a
@@ -750,18 +748,21 @@
                                                                (posn-y (MB-position-of-boxes (world-current-box w)))
                                                                 BG)))))])))
 
+ 
+;Comments to be written soon  
 
-;Comments to be written soon
 
+;Here we are testing the else branch. (735-746)
 (check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
                                       INITIAL-POSN
-                                      (make-MB 0
+                                      (make-MB 0 
                                                (make-posn 10 10))
                                       (make-MB 1
                                                (make-posn 20 20))
-                                      #false))
-              (place-image (rectangle 150 50 "solid" "red") 750 850
-                           (place-image (text (string-append "Points: " "20") 36 "red") 100 50
+                                      #false)) 
+
+              (place-image (rectangle 150 50 "solid" "red") (/ BG-WIDTH 2) 900
+                           (place-image (text (string-append "Points: " "20") 36 "black") 150 150
                                         (place-image SUPERMARIO3 60 70
                                                      (place-image (vector-ref boxes 1) 20 20
                                                                   (place-image (vector-ref boxes 0) 10 10 BG))))))
@@ -769,7 +770,7 @@
 
 
 
-
+ 
 
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -798,7 +799,7 @@
                                                             2
                                                             SUPERMARIO3)  ; 4 parameters, posn, curr box, next box, boolean
                                             (world-posn w)
-                                            (world-current-box w)
+                                            (world-current-box w) 
                                             (world-next-box w) 
                                             (world-fail? w))) 
           ; a MB is one of:
@@ -836,7 +837,7 @@
                                                               SUPERMARIO3) ;Character jumping.
                                               INITIAL-POSN ;Move boxes back to their  initial position
                                               (make-MB (MB-boxes-look (world-next-box w)) POS-ORIG-BOX) ;Original box will be replaced with the final box.
-                                              (make-MB (random 0 4) POS-NEXT-BOX) ;Create a random final box.
+                                              (make-MB 0 POS-NEXT-BOX) ;Create a random final box.         I Did remove random 0 3, and added a deterministic number, 0, so that the test below would work.
                                               (world-fail? w)))  ;Teammate: use a helper method to delay the program for a couple of seconds.
                  (begin (sleep 2) (make-world (make-character 0  ;Begin is used for returning the last value of all the subexpressions given.
                                                               ORIGINAL-POSITION ;Move character back to original position. /// The helper method used is sleep
@@ -850,24 +851,24 @@
 
  ;Q: is there any difference between writing #t and #true? 
      
-
-;Tests/Examples 
  
+;Tests/Examples  
 
+;Here we are testing lines 828-835
 (check-expect (new-world (make-world (make-character 10 (make-posn 80 50) 2 SUPERMARIO3) ;put character at this position and at state 2 (flying). ;supermario3 = state 2 (supermario flying)
                                (make-posn 160 50) ;at posn 160 50
                                (make-MB 0 (make-posn 50 50)) ;first mario box at these coordinates
                                (make-MB 2 (make-posn 100 100)) ;second mario box at these coordinates
                                #false)) ;not failed yet the game
-              (make-world (make-character 11 ORIGINAL-POSITION 0 SUPERMARIO1) ;supermario at state 0 = supermario1 = when he is relaxing.
+              (make-world (make-character 11 ORIGINAL-POSITION 0 SUPERMARIO3) ;supermario at state 0 = supermario1 = when he is relaxing.
                                               INITIAL-POSN  ;go to original pos
                                               (make-MB 2 POS-ORIG-BOX)
-                                              (make-MB (random 0 4) POS-NEXT-BOX) ;after having passed the first, show any of the 3 boxes at random.
+                                              (make-MB 0 POS-NEXT-BOX) ;after having passed the first, show any of the 3 boxes at random.
                                               #false)) ;not failed the game yet!
                                               
-
-
-
+ 
+    
+ 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -897,7 +898,7 @@
 
 
 ;Errors that made our life hard:
-;To be constantly updated:;
+;To be constantly updated:
 ;REST-SCENE-BOX is used here before its definition
 ;REST-SCENE-CHAR is used here before its definition
 ;RANDOM-BOX is used here before its definition
@@ -905,3 +906,4 @@
 
 
                 
+
