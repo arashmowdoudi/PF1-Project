@@ -778,7 +778,6 @@
 
 
 
-
 ; new-world: World -> World
 ; New-world takes a current world, and returns a newly updated world after some events have occured on it.
 ; Header (define (new-world w) (... [ ....]...
