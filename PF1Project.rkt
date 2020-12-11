@@ -73,14 +73,19 @@
 (define BG (empty-scene BG-WIDTH BG-HEIGHT BG-COLOR))
 
 
+;Tests/Examples
+(check-expect BG (empty-scene 1999 999 BG-COLOR))
+
+
+
  
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 ;bitmap idea received from here: https://www.reddit.com/r/Racket/comments/291g5b/loading_pngjpeg_image_in_racket/
-;bitmap implementation adopted from here : https://stackoverflow.com/questions/5355251/bitmap-in-dr-racket
-
+;bitmap implementation adopted from: https://stackoverflow.com/questions/5355251/bitmap-in-dr-racket
 ;Start/original scene shown to user after having cmd+r the program.
+;Given a "program execution", return the start scene of the game!
 ;Interpretation: The starting scene of the Game.
 ;Header: (define start-scene (bitmap "......"))
 ;Template:
@@ -92,6 +97,7 @@
 
 
 ;End/fail scene shown to user after having failed to comply with the game's rules.
+;Given a "program execution", return the start scene of the game!
 ;Interpretation: The fail scene of the Game.
 ;Header: (define end-scene (bitmap "......"))
 ;Template
@@ -100,7 +106,7 @@
 ;Code:
 (define end (bitmap "images/sm-images/gj.png"))
 
-;path to the image we will put in order to show to user the fail scenery.
+;path to the images(s) we will put in order to show to user the fail scenery.
             
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,7 +125,7 @@
 (define 1-POINT 1)
 (define 2-POINTS 2)
 (define 3-POINTS 3)
-(define 4-POINTS 4)
+(define 4-POINTS 4) 
  
 
 ;Tests/Examples
@@ -140,11 +146,13 @@
 ;the box-width and height will be the same to the first box we will have in our game.  (starting-box). so we will use the starting box.
 ;Given the definitions of the box width & height, upload their respective pictures.
 ;Interpretation: The image showing width and the height of the boxes.
-;Header (define BOX-HEIGHT (image-height (bitmap "........"))) , similarly we do the width
+;Header (define BOX-HEIGHT (image-height (bitmap "........")))
+
 ;Template: (define BOX-HEIGHT (image-height (bitmap "path-to-image")))
 
 ;Code:
 (define BOX-WIDTH (image-width  (bitmap "images/sm-images/starting-box.png")))
+;similarly to above, we do the width
 
 (define BOX-HEIGHT (image-height (bitmap "images/sm-images/starting-box.png")))
 
@@ -156,16 +164,22 @@
 ;Interpretation: The 2 kind of movements on the X axis, 1 big and 1 small.
 ;Header: (define movex + ....)
 ;(define movex ....)
-;Template (define MOVE-X + number)
-;(define MOVE2-X + number)
-(define MOVE-X +100)
+;Template (define bigx + number)
+;(define smallx + number)
+;both take a number as their parameter.
+(define bigx +100)
 (define smallx 10)
 
 ;Y Axis
 ;Interpretation: The 2 kind of movements on the Y axis, 1 big and 1 small.
 ;Similar template to previous defs
+;Header: (define movey + ....)
+;(define smally ....)
+;Template (define bigy + number)
+;(define smally + number)
+;both take a number as their parameter.
 ;Code:
-(define MOVE-Y -80)
+(define bigy -80)
 (define smally -7)
 
 
@@ -173,20 +187,35 @@
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ;Game Character:
+
+;ALL OF THE 3 DEFINITIONS FOLLOWING TAKE AN IMAGE AS A PARAMETER.
+
+
 ;Interpretation: The initial state of supermario.
-;Header/Template: similar to previous examples when used bitmap.
+;Header
+;(define SUPERMARIO1 (bitmap "..path-to-image..))
+;Template:
+;(define SUPERMARIO1 (bitmap "..path-to-image..))
 ;Code:
 (define SUPERMARIO1 (bitmap "images/sm-images/relax.png"))
 
 
 ;SuperMario getting ready to jump
-;Interpretation: a jumping state of our character.
+;Interpretation: supermario in his befote-the-jump position.
+;Header
+;(define SUPERMARIO2 (bitmap "..path-to-image..))
+;Template:
+;(define SUPERMARIO2 (bitmap "..path-to-image..))
 ;Code:
 (define SUPERMARIO2 (bitmap "images/sm-images/readytojump.png"))
 
 
 ;SuperMario on the jumping state.
 ;Interpretation: the flying in-game character. :)
+;Header
+;(define SUPERMARIO3 (bitmap "..path-to-image..))
+;Template:
+;(define SUPERMARIO3 (bitmap "..path-to-image..))
 ;Code:
 (define SUPERMARIO3 (bitmap "images/sm-images/sm2.png"))
 
@@ -195,14 +224,28 @@
 
 
 ;Tests/Examples
-;(check-random ORIGINAL-POS (make-posn 300 550))
+(check-random ORIGINAL-POSITION (make-posn 300 550))
 
 ;SuperMario original position 
 ;Interpretation: the original position onto the box of SuperMario.
+;Header: (define (original-position (make-posn ... ....))
+;Template: (define (original-position (make-posn number number))
+;An original position is one of:
+;(make-posn number number)
+;where number number are the respected x and y coordinates of the original position.
 ;Code:
+
 (define ORIGINAL-POSITION (make-posn 300 550))
 
+;Tests/Examples
+(check-expect ORIGINAL-POSITION (make-posn 300 550))
+
+
+;Fun function, we can use ORIGINAL-POSITION either way.
+
 (define INITIAL-POSN ORIGINAL-POSITION)
+
+
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -214,13 +257,18 @@
 ;A Box is a:
 ;(make-posn Number Number))
 ;Where number number are the x and y coordinates respectively of the original box.
-;Header: (define ORIG (make-posn ... ...))
+;Header: (define original-box (make-posn ... ...))
 ;Template
-;(define original-box (make-posn 100 100))
+;(define original-box (make-posn number number))
 
 ;Code:
 (define POS-ORIG-BOX (make-posn 250 750))
 
+
+
+;Tests/Examples
+
+;Teammates: FYI: check-random is used for checking whether the first expression evaluates to the same value as its expected one.
 (check-random POS-ORIG-BOX (make-posn 250 750))
 
 
@@ -237,9 +285,10 @@
 
 ;Ending Position
 
-;Teammates, please adjust those numbers below to your preferences.Test them out please
+;Teammates, please adjust those numbers below to your preferences.Test them out please.
+
 ;Given the starting box position, create the final one.
-;Interpretation: The position of the juping-to box (final box)
+;Interpretation: The position of the jumping-to box (final box)
 ;A box is a:
 ;(make-posn Number Number))
 ;Where number number are the x and y coordinates respectively of the original box.
@@ -281,11 +330,12 @@
 ;(define boxes (make-vector number-of-vectors (vector-set boxes starting-box (bitmap "-path-to-image") ------> similar, but now add box at ending1 position and box at ending 2 position.
 
 ;Code:
-(define boxes (make-vector 3))  ;boxes = START & END1 & END2 (for the two levels) 
+(define boxes (make-vector 4))  ;boxes = START & END1 & END2 (for the two levels) 
 ; https://docs.racket-lang.org/reference/vectors.html#%28def._%28%28quote._~23~25kernel%29._vector-set%21%29%29
 (vector-set! boxes 0 (bitmap "images/sm-images/starting-box.png"))
 (vector-set! boxes 1 (bitmap "images/sm-images/final-box.png"))
-(vector-set! boxes 2 (bitmap "images/sm-images/final-box.png"))
+(vector-set! boxes 2 (bitmap "images/sm-images/box3.png"))
+(vector-set! boxes 3 (bitmap "images/sm-images/box4.png"))
 
 
 
@@ -293,7 +343,13 @@
 
 
 
+;;;;;;; IMPORTANT NOTE ;;;;;;;;
 
+
+; ALL BOXES WILL BE CHANGED AT RANDOM WITH THE HELP OF THE RANDOM KEYWORD FOR DIVERSITY.
+
+;RANDOM DOCUMENTATION CAN BE FOUND HERE:
+;https://docs.racket-lang.org/htdp-langs/advanced.html?q=random#%28def._htdp-advanced._%28%28lib._lang%2Fhtdp-advanced..rkt%29._random%29%29
 
 
 
@@ -377,7 +433,7 @@
 ;Template
 ;(define rest-scene-box (make-gamebox (random number number) POS-ORIG-BOX))
 ;Code
-(define REST-SCENE-BOX (make-MB (random 0 3) POS-ORIG-BOX))
+(define REST-SCENE-BOX (make-MB (random 0 4) POS-ORIG-BOX))
 
 ;--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -411,7 +467,7 @@
 ;(define random-box (make-gamebox (random number number) final-box))
 
 ;Code:
-(define RANDOM-BOX (make-MB (random 0 3) POS-NEXT-BOX))
+(define RANDOM-BOX (make-MB (random 0 4) POS-NEXT-BOX))
 
 
 
@@ -465,8 +521,8 @@
                                       1 ;Character at state 1, getting ready to jump
                                       SUPERMARIO2) ; he will be at version 2 of supermario, which is when he is getting ready to jump.                            
                       (make-posn
-                      (+ MOVE-X (posn-x (world-posn w)))   ;Update coordinates of the starting and ending boxes.
-                      (+ MOVE-Y (posn-y (world-posn w))))
+                      (+ bigx (posn-x (world-posn w)))   ;Update coordinates of the starting and ending boxes.
+                      (+ bigy (posn-y (world-posn w))))
                      ;
                      (world-current-box w)  ;current and next box of the world function
                      (world-next-box w)
@@ -483,7 +539,7 @@
                      (world-next-box w)
                      #false)]  ; not failed
         [else w]))
-
+ 
  
 
         
@@ -565,7 +621,7 @@
 
 
 
-
+ 
 
 ;-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -679,6 +735,8 @@
                                                                (posn-y (MB-position-of-boxes (world-current-box w)))
                                                                 BG)))))])))
 
+
+;Comments to be written soon
 
 (check-expect (scenery (make-world (make-character 20 (make-posn 60 70) 2 SUPERMARIO3)
                                       INITIAL-POSN
