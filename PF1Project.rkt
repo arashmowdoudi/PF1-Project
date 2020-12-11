@@ -5,11 +5,14 @@
 ;; about the language level of this file in a form that our tools can easily process.
 ; #reader(lib "htdp-advanced-reader.ss" "lang")((modname test) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
 ; PROGRAMMING FUNDAMENTALS 1
+
 ; GROUP PROJECT
+
+; MEMBERS
+
 ; KELVIN LIKOLLARI
 ; ARASH MOWDOUDI
 ; KIERAN MCKEE 
-; MEMBERS
 
 ;PS1: Numbers in all definitions are subject to change!
 
